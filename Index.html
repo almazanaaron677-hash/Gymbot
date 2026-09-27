@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GymBot</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .contenedor {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 15px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #respuesta {
+      margin-top: 20px;
+      padding: 15px;
+      background: #eeeeee;
+      border-radius: 10px;
+      min-height: 40px;
+    }
+
+    .info {
+      margin-top: 25px;
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+
+    <h1>🏋️ GymBot</h1>
+
+    <p>
+      Hola, soy GymBot. Puedo responder preguntas básicas
+      sobre ejercicio, entrenamiento y hábitos saludables.
+    </p>
+
+    <input
+      id="pregunta"
+      type="text"
+      placeholder="Escribe tu pregunta..."
+    >
+
+    <button onclick="responder()">
+      Preguntar
+    </button>
+
+    <div id="respuesta">
+      Escribe una pregunta para comenzar.
+    </div>
+
+    <div class="info">
+      <h2>Preguntas que puedes hacer</h2>
+
+      <p>💪 ¿Qué ejercicios puedo hacer para brazos?</p>
+      <p>🦵 ¿Qué ejercicios puedo hacer para piernas?</p>
+      <p>🏃 ¿Por qué debo calentar?</p>
+      <p>🥗 ¿Qué debo comer para entrenar?</p>
+      <p>😴 ¿Por qué es importante descansar?</p>
+      <p>🏋️ ¿Qué es una rutina?</p>
+    </div>
+
+  </div>
+
+  <script>
+
+    function responder() {
+
+      const pregunta =
+        document.getElementById("pregunta").value.toLowerCase();
+
+      const respuesta =
+        document.getElementById("respuesta");
+
+      if (pregunta.trim() === "") {
+
+        respuesta.textContent =
+          "Escribe una pregunta para que pueda ayudarte.";
+
+      }
+
+      else if (
+        pregunta.includes("hola") ||
+        pregunta.includes("buenas")
+      ) {
+
+        respuesta.textContent =
+          "¡Hola! Soy GymBot. ¿Sobre qué ejercicio quieres aprender?";
+
+      }
+
+      else if (
+        pregunta.includes("brazo") ||
+        pregunta.includes("brazos")
+      ) {
+
+        respuesta.textContent =
+          "Algunos ejercicios básicos para brazos son las flexiones y ejercicios con pesas ligeras. Es importante utilizar una técnica correcta.";
+
+      }
+
+      else if (
+        pregunta.includes("pierna") ||
+        pregunta.includes("piernas")
+      ) {
+
+        respuesta.textContent =
+          "Las sentadillas, desplantes y otros ejercicios de pierna pueden formar parte de un entrenamiento básico.";
+
+      }
+
+      else if (
+        pregunta.includes("pecho")
+      ) {
+
+        respuesta.textContent =
+          "Las flexiones son un ejercicio básico que puede trabajar el pecho, los brazos y los hombros.";
+
+      }
+
+      else if (
+        pregunta.includes("espalda")
+      ) {
+
+        respuesta.textContent =
+          "Para trabajar la espalda existen diferentes ejercicios. Es importante aprender primero la técnica correcta.";
+
+      }
+
+      else if (
+        pregunta.includes("abdomen") ||
+        pregunta.includes("abdominales")
+      ) {
+
+        respuesta.textContent =
+          "Los ejercicios abdominales pueden fortalecer la zona media. Recuerda que la técnica es más importante que hacer muchas repeticiones.";
+
+      }
+
+      else if (
+        pregunta.includes("calentar") ||
+        pregunta.includes("calentamiento")
+      ) {
+
+        respuesta.textContent =
+          "El calentamiento ayuda a preparar el cuerpo antes del ejercicio. Puede incluir movimientos suaves y movilidad.";
+
+      }
+
+      else if (
+        pregunta.includes("estirar") ||
+        pregunta.includes("estiramiento")
+      ) {
+
+        respuesta.textContent =
+          "Los estiramientos pueden formar parte de una rutina de movilidad. Hazlos de manera suave y sin movimientos bruscos.";
+
+      }
+
+      else if (
+        pregunta.includes("comida") ||
+        pregunta.includes("comer") ||
+        pregunta.includes("alimentación")
+      ) {
+
+        respuesta.textContent =
+          "Una alimentación saludable debe incluir variedad de alimentos, como frutas, verduras, cereales, proteínas y suficiente agua.";
+
+      }
+
+      else if (
+        pregunta.includes("agua") ||
+        pregunta.includes("hidratación")
+      ) {
+
+        respuesta.textContent =
+          "Mantenerse hidratado es importante durante el día y especialmente cuando realizas actividad física.";
+
+      }
+
+      else if (
+        pregunta.includes("descansar") ||
+        pregunta.includes("descanso") ||
+        pregunta.includes("dormir")
+      ) {
+
+        respuesta.textContent =
+          "El descanso es importante porque permite que el cuerpo se recupere después de realizar actividad física.";
+
+      }
+
+      else if (
+        pregunta.includes("rutina") ||
+        pregunta.includes("entrenamiento")
+      ) {
+
+        respuesta.textContent =
+          "Una rutina es un conjunto organizado de ejercicios. Puede incluir calentamiento, ejercicios principales y recuperación.";
+
+      }
+
+      else if (
+        pregunta.includes("principiante") ||
+        pregunta.includes("principiantes")
+      ) {
+
+        respuesta.textContent =
+          "Si eres principiante, empieza con ejercicios sencillos, aprende la técnica y aumenta la dificultad poco a poco.";
+
+      }
+
+      else if (
+        pregunta.includes("gym") ||
+        pregunta.includes("gimnasio")
+      ) {
+
+        respuesta.textContent =
+          "En el gimnasio puedes encontrar diferentes máquinas y pesas. Si eres principiante, pide orientación sobre cómo utilizar correctamente el equipo.";
+
+      }
+
+      else if (
+        pregunta.includes("fuerza")
+      ) {
+
+        respuesta.textContent =
+          "El entrenamiento de fuerza utiliza ejercicios que hacen trabajar los músculos. La técnica y la progresión gradual son importantes.";
+
+      }
+
+      else {
+
+        respuesta.textContent =
+          "Todavía no tengo una respuesta para esa pregunta. Prueba con: brazos, piernas, pecho, espalda, abdomen, calentamiento, alimentación, agua, descanso o rutina.";
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>
