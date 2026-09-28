@@ -1,277 +1,636 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GymBot</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GymBot 2.0 🏋️</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
-    }
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    .contenedor {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-    }
+:root {
+  --fondo: #eef2f7;
+  --tarjeta: #ffffff;
+  --texto: #111827;
+  --secundario: #6b7280;
+  --principal: #2563eb;
+  --principal-oscuro: #1d4ed8;
+  --bot: #f3f4f6;
+  --borde: #e5e7eb;
+}
 
-    h1 {
-      margin-bottom: 5px;
-    }
+body.oscuro {
+  --fondo: #111827;
+  --tarjeta: #1f2937;
+  --texto: #f9fafb;
+  --secundario: #d1d5db;
+  --bot: #374151;
+  --borde: #4b5563;
+}
 
-    input {
-      width: 90%;
-      padding: 12px;
-      margin: 15px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  min-height: 100vh;
+  transition: 0.3s;
+}
 
-    button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-    }
+header {
+  background: #111827;
+  color: white;
+  padding: 18px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
 
-    #respuesta {
-      margin-top: 20px;
-      padding: 15px;
-      background: #eeeeee;
-      border-radius: 10px;
-      min-height: 40px;
-    }
+header h1 {
+  font-size: 28px;
+  margin-bottom: 5px;
+}
 
-    .info {
-      margin-top: 25px;
-      text-align: left;
-    }
-  </style>
-</head>
+header p {
+  font-size: 14px;
+  opacity: 0.8;
+}
 
-<body>
+.menu {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px;
+  background: var(--tarjeta);
+  border-bottom: 1px solid var(--borde);
+}
 
-  <div class="contenedor">
+.menu button {
+  background: var(--principal);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 9px 14px;
+  cursor: pointer;
+  font-size: 13px;
+}
 
-    <h1>🏋️ GymBot</h1>
+.menu button:hover {
+  background: var(--principal-oscuro);
+}
 
+.contenedor {
+  max-width: 850px;
+  margin: auto;
+  padding: 15px;
+}
+
+.presentacion {
+  background: var(--tarjeta);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 15px;
+  border: 1px solid var(--borde);
+}
+
+.presentacion h2 {
+  margin-bottom: 8px;
+}
+
+.presentacion p {
+  color: var(--secundario);
+  line-height: 1.5;
+}
+
+.chat {
+  padding-bottom: 130px;
+}
+
+.mensaje {
+  display: flex;
+  margin: 12px 0;
+  animation: aparecer 0.25s ease;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mensaje.bot {
+  justify-content: flex-start;
+}
+
+.mensaje.usuario {
+  justify-content: flex-end;
+}
+
+.burbuja {
+  max-width: 82%;
+  padding: 13px 16px;
+  border-radius: 18px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.mensaje.bot .burbuja {
+  background: var(--bot);
+  border-bottom-left-radius: 5px;
+}
+
+.mensaje.usuario .burbuja {
+  background: var(--principal);
+  color: white;
+  border-bottom-right-radius: 5px;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: var(--principal);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 7px;
+  flex-shrink: 0;
+}
+
+.usuario .avatar {
+  display: none;
+}
+
+.tarjeta {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.tarjeta h3 {
+  margin-bottom: 8px;
+}
+
+.tarjeta p {
+  color: var(--secundario);
+  line-height: 1.5;
+}
+
+.ejercicio-icono {
+  font-size: 50px<section id="pantalla-rutinas" class="pantalla">
+
+  <div class="presentacion">
+    <h2>📋 Rutinas</h2>
     <p>
-      Hola, soy GymBot. Puedo responder preguntas básicas
-      sobre ejercicio, entrenamiento y hábitos saludables.
+      Elige una rutina según tu experiencia. La idea es
+      aprender los movimientos y progresar poco a poco.
     </p>
-
-    <input
-      id="pregunta"
-      type="text"
-      placeholder="Escribe tu pregunta..."
-    >
-
-    <button onclick="responder()">
-      Preguntar
-    </button>
-
-    <div id="respuesta">
-      Escribe una pregunta para comenzar.
-    </div>
-
-    <div class="info">
-      <h2>Preguntas que puedes hacer</h2>
-
-      <p>💪 ¿Qué ejercicios puedo hacer para brazos?</p>
-      <p>🦵 ¿Qué ejercicios puedo hacer para piernas?</p>
-      <p>🏃 ¿Por qué debo calentar?</p>
-      <p>🥗 ¿Qué debo comer para entrenar?</p>
-      <p>😴 ¿Por qué es importante descansar?</p>
-      <p>🏋️ ¿Qué es una rutina?</p>
-    </div>
-
   </div>
 
-  <script>
+  <div class="tarjeta">
+    <h3>🌱 Principiante</h3>
+    <p>Una opción sencilla para familiarizarte con el ejercicio.</p>
 
-    function responder() {
+    <ul class="lista">
+      <li>Calentamiento suave</li>
+      <li>Sentadillas</li>
+      <li>Flexiones adaptadas a tu nivel</li>
+      <li>Remo</li>
+      <li>Plancha</li>
+      <li>Estiramiento suave</li>
+    </ul>
 
-      const pregunta =
-        document.getElementById("pregunta").value.toLowerCase();
+    <button class="boton-card" onclick="mostrarRutina('principiante')">
+      Ver rutina
+    </button>
+  </div>
 
-      const respuesta =
-        document.getElementById("respuesta");
+  <div class="tarjeta">
+    <h3>🔥 Intermedio</h3>
+    <p>Para quienes ya conocen los movimientos básicos.</p>
 
-      if (pregunta.trim() === "") {
+    <ul class="lista">
+      <li>Calentamiento</li>
+      <li>Sentadillas</li>
+      <li>Zancadas</li>
+      <li>Flexiones</li>
+      <li>Remo</li>
+      <li>Plancha</li>
+      <li>Estiramiento</li>
+    </ul>
 
-        respuesta.textContent =
-          "Escribe una pregunta para que pueda ayudarte.";
+    <button class="boton-card" onclick="mostrarRutina('intermedio')">
+      Ver rutina
+    </button>
+  </div>
 
-      }
+  <div class="tarjeta">
+    <h3>💪 Fuerza general</h3>
+    <p>Una rutina educativa para trabajar diferentes grupos musculares.</p>
 
-      else if (
-        pregunta.includes("hola") ||
-        pregunta.includes("buenas")
-      ) {
+    <ul class="lista">
+      <li>Piernas</li>
+      <li>Pecho</li>
+      <li>Espalda</li>
+      <li>Brazos</li>
+      <li>Zona media</li>
+    </ul>
 
-        respuesta.textContent =
-          "¡Hola! Soy GymBot. ¿Sobre qué ejercicio quieres aprender?";
+    <button class="boton-card" onclick="mostrarRutina('fuerza')">
+      Ver rutina
+    </button>
+  </div>
 
-      }
+  <div id="rutina-result"></div>
 
-      else if (
-        pregunta.includes("brazo") ||
-        pregunta.includes("brazos")
-      ) {
+  <div class="nota">
+    💡 <b>Consejo:</b> la técnica correcta y la recuperación
+    son más importantes que intentar levantarfunction verEjercicio(tipo) {
 
-        respuesta.textContent =
-          "Algunos ejercicios básicos para brazos son las flexiones y ejercicios con pesas ligeras. Es importante utilizar una técnica correcta.";
+  const contenedor =
+    document.getElementById("informacion-ejercicio");
 
-      }
+  let titulo = "";
+  let icono = "";
+  let texto = "";
+  let musculo = "";
 
-      else if (
-        pregunta.includes("pierna") ||
-        pregunta.includes("piernas")
-      ) {
 
-        respuesta.textContent =
-          "Las sentadillas, desplantes y otros ejercicios de pierna pueden formar parte de un entrenamiento básico.";
+  if (tipo === "curl") {
 
-      }
+    titulo = "Curl de bíceps";
+    icono = "💪";
+    musculo = "Bíceps";
 
-      else if (
-        pregunta.includes("pecho")
-      ) {
+    texto = `
+      El curl de bíceps es un ejercicio utilizado
+      para trabajar principalmente los músculos
+      de la parte frontal del brazo.
 
-        respuesta.textContent =
-          "Las flexiones son un ejercicio básico que puede trabajar el pecho, los brazos y los hombros.";
+      <br><br>
 
-      }
+      <b>Puntos básicos:</b>
 
-      else if (
-        pregunta.includes("espalda")
-      ) {
+      <ul class="lista">
+        <li>Mantén una postura estable.</li>
+        <li>Mueve los brazos de manera controlada.</li>
+        <li>Evita utilizar movimientos bruscos.</li>
+        <li>Utiliza una resistencia que puedas controlar.</li>
+      </ul>
+    `;
 
-        respuesta.textContent =
-          "Para trabajar la espalda existen diferentes ejercicios. Es importante aprender primero la técnica correcta.";
+  }
 
-      }
 
-      else if (
-        pregunta.includes("abdomen") ||
-        pregunta.includes("abdominales")
-      ) {
+  if (tipo === "sentadilla") {
 
-        respuesta.textContent =
-          "Los ejercicios abdominales pueden fortalecer la zona media. Recuerda que la técnica es más importante que hacer muchas repeticiones.";
+    titulo = "Sentadilla";
+    icono = "🦵";
+    musculo = "Piernas";
 
-      }
+    texto = `
+      La sentadilla es un movimiento que involucra
+      principalmente las piernas y la zona de la cadera.
 
-      else if (
-        pregunta.includes("calentar") ||
-        pregunta.includes("calentamiento")
-      ) {
+      <br><br>
 
-        respuesta.textContent =
-          "El calentamiento ayuda a preparar el cuerpo antes del ejercicio. Puede incluir movimientos suaves y movilidad.";
+      <b>Puntos básicos:</b>
 
-      }
+      <ul class="lista">
+        <li>Mantén los pies en una posición cómoda.</li>
+        <li>Controla el movimiento hacia abajo.</li>
+        <li>Mantén una postura estable.</li>
+        <li>Regresa a la posición inicial de forma controlada.</li>
+      </ul>
+    `;
 
-      else if (
-        pregunta.includes("estirar") ||
-        pregunta.includes("estiramiento")
-      ) {
+  }
 
-        respuesta.textContent =
-          "Los estiramientos pueden formar parte de una rutina de movilidad. Hazlos de manera suave y sin movimientos bruscos.";
 
-      }
+  if (tipo === "flexiones") {
 
-      else if (
-        pregunta.includes("comida") ||
-        pregunta.includes("comer") ||
-        pregunta.includes("alimentación")
-      ) {
+    titulo = "Flexiones";
+    icono = "🏋️";
+    musculo = "Pecho y brazos";
 
-        respuesta.textContent =
-          "Una alimentación saludable debe incluir variedad de alimentos, como frutas, verduras, cereales, proteínas y suficiente agua.";
+    texto = `
+      Las flexiones son un ejercicio con el peso
+      corporal que puede trabajar pecho, brazos
+      y parte de la zona media.
 
-      }
+      <br><br>
 
-      else if (
-        pregunta.includes("agua") ||
-        pregunta.includes("hidratación")
-      ) {
+      <b>Puntos básicos:</b>
 
-        respuesta.textContent =
-          "Mantenerse hidratado es importante durante el día y especialmente cuando realizas actividad física.";
+      <ul class="lista">
+        <li>Mantén el cuerpo alineado.</li>
+        <li>Controla el descenso.</li>
+        <li>Empuja de forma controlada.</li>
+        <li>Si es necesario, utiliza una variante más sencilla.</li>
+      </ul>
+    `;
 
-      }
+  }
 
-      else if (
-        pregunta.includes("descansar") ||
-        pregunta.includes("descanso") ||
-        pregunta.includes("dormir")
-      ) {
 
-        respuesta.textContent =
-          "El descanso es importante porque permite que el cuerpo se recupere después de realizar actividad física.";
+  if (tipo === "remo") {
 
-      }
+    titulo = "Remo";
+    icono = "🔙";
+    musculo = "Espalda";
 
-      else if (
-        pregunta.includes("rutina") ||
-        pregunta.includes("entrenamiento")
-      ) {
+    texto = `
+      El remo es un movimiento utilizado para
+      trabajar diferentes músculos de la espalda.
 
-        respuesta.textContent =
-          "Una rutina es un conjunto organizado de ejercicios. Puede incluir calentamiento, ejercicios principales y recuperación.";
+      <br><br>
 
-      }
+      <b>Puntos básicos:</b>
 
-      else if (
-        pregunta.includes("principiante") ||
-        pregunta.includes("principiantes")
-      ) {
+      <ul class="lista">
+        <li>Mantén la espalda en una posición estable.</li>
+        <li>Realiza el movimiento de forma controlada.</li>
+        <li>Evita utilizar impulso excesivo.</li>
+        <li>Usa una resistencia adecuada.</li>
+      </ul>
+    `;
 
-        respuesta.textContent =
-          "Si eres principiante, empieza con ejercicios sencillos, aprende la técnica y aumenta la dificultad poco a poco.";
+  }
 
-      }
 
-      else if (
-        pregunta.includes("gym") ||
-        pregunta.includes("gimnasio")
-      ) {
+  if (tipo === "plancha") {
 
-        respuesta.textContent =
-          "En el gimnasio puedes encontrar diferentes máquinas y pesas. Si eres principiante, pide orientación sobre cómo utilizar correctamente el equipo.";
+    titulo = "Plancha";
+    icono = "🔥";
+    musculo = "Zona media";
 
-      }
+    texto<script>
+function buscarEjercicio() {
 
-      else if (
-        pregunta.includes("fuerza")
-      ) {
+  const entradaBusqueda =
+    document.getElementById("buscador");
 
-        respuesta.textContent =
-          "El entrenamiento de fuerza utiliza ejercicios que hacen trabajar los músculos. La técnica y la progresión gradual son importantes.";
+  if (!entradaBusqueda) {
+    return;
+  }
 
-      }
+  const texto =
+    normalizar(entradaBusqueda.value);
 
-      else {
+  const tarjetas =
+    document.querySelectorAll(".ejercicio-card");
 
-        respuesta.textContent =
-          "Todavía no tengo una respuesta para esa pregunta. Prueba con: brazos, piernas, pecho, espalda, abdomen, calentamiento, alimentación, agua, descanso o rutina.";
+  tarjetas.forEach(function(tarjeta) {
 
-      }
+    const contenido =
+      normalizar(tarjeta.textContent);
+
+    if (
+      texto === "" ||
+      contenido.includes(texto)
+    ) {
+
+      tarjeta.style.display = "block";
+
+    } else {
+
+      tarjeta.style.display = "none";
 
     }
 
-  </script>
+  });
+
+}
+
+
+function limpiarChat() {
+
+  const chat =
+    document.getElementById("chat");
+
+  chat.innerHTML = `
+
+    <div class="mensaje bot">
+
+      <div class="avatar">
+        🤖
+      </div>
+
+      <div class="burbuja">
+
+        ¡Listo! 🧹
+        La conversación fue limpiada.
+
+        <br><br>
+
+        ¿Qué quieres preguntarme ahora?
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function mensajeBienvenida() {
+
+  const hora =
+    new Date().getHours();
+
+  let saludo = "Hola";
+
+  if (hora >= 5 && hora < 12) {
+
+    saludo = "Buenos días";
+
+  }
+
+  else if (hora >= 12 && hora < 19) {
+
+    saludo = "Buenas tardes";
+
+  }
+
+  else {
+
+    saludo = "Buenas noches";
+
+  }
+
+  return `
+    ${saludo} 👋
+    Soy <b>GymBot</b>.
+    ¿Qué te gustaría aprender?
+  `;
+
+}
+
+
+function mostrarAyuda() {
+
+  mostrarPantalla("chat");
+
+  agregarMensaje(`
+
+    <b>🆘 Ayuda de GymBot</b>
+
+    <br><br>
+
+    Puedes preguntarme sobre:
+
+    <div class="tarjeta">
+
+      💪 Brazos<br>
+      🦵 Piernas<br>
+      🏋️ Pecho<br>
+      🔙 Espalda<br>
+      🔥 Abdomen<br>
+      📋 Rutinas<br>
+      🔥 Calentamiento<br>
+      🧘 Estiramiento<br>
+      💧 Hidratación<br>
+      😴 Descanso
+
+    </div>
+
+    También puedes utilizar las secciones
+    de ejercicios, rutinas y herramientas.
+
+  `, "bot");
+
+}
+
+
+function mostrarInfoProyecto() {
+
+  mostrarPantalla("chat");
+
+  agregarMensaje(`
+
+    <b>📚 Sobre GymBot</b>
+
+    <br><br>
+
+    GymBot es un proyecto escolar que utiliza
+    HTML, CSS y JavaScript para crear un
+    chatbot interactivo.
+
+    <br><br>
+
+    <div class="tarjeta">
+
+      <b>Objetivo:</b><br>
+
+      Proporcionar información básica y sencilla
+      sobre ejercicio, entrenamiento y hábitos
+      saludables.
+
+    </div>
+
+  `, "bot");
+
+}
+
+
+function crearBotonesExtra() {
+
+  const contenedor =
+    document.querySelector(".presentacion");
+
+  if (!contenedor) {
+    return;
+  }
+
+}
+
+
+function guardarModo() {
+
+  const oscuro =
+    document.body.classList.contains("oscuro");
+
+  try {
+
+    localStorage.setItem(
+      "gymbotModo",
+      oscuro ? "oscuro" : "claro"
+    );
+
+  } catch (error) {
+
+    console.log(
+      "No se pudo guardar el modo."
+    );
+
+  }
+
+}
+
+
+function cargarModo() {
+
+  try {
+
+    const modo =
+      localStorage.getItem("gymbotModo");
+
+    if (modo === "oscuro") {
+
+      document.body.classList.add("oscuro");
+
+    }
+
+  } catch (error) {
+
+    console.log(
+      "No se pudo cargar el modo."
+    );
+
+  }
+
+}
+
+
+function cambiarModo() {
+
+  document
+    .body
+    .classList
+    .toggle("oscuro");
+
+  guardarModo();
+
+}
+
+
+function prepararPagina() {
+
+  cargarModo();
+
+  actualizarTiempo();
+
+}
+
+
+prepararPagina();
+
+</script>
 
 </body>
 </html>
