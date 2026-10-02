@@ -724,5 +724,10 @@ function enviarMensaje() {
 /* =========================
    ENTER
 ========================= */
+entrada.addEventListener("keydown", function(event) {
 
-entrada.addEventListener(
+    if (event.key === "Enter") {
+        enviarMensaje();
+    }
+
+});
