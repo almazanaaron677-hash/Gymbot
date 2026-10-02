@@ -1,201 +1,414 @@
-
 // ==========================================
-// FITBOT - CEREBRO DEL CHATBOT
+// GYMBOT - CHATBOT DE GIMNASIO
 // ==========================================
 
 const chat = document.getElementById("chat");
 const entrada = document.getElementById("entrada");
 
 // ==========================================
-// BASE DE CONOCIMIENTO
+// BASE DE CONOCIMIENTOS
 // ==========================================
 
 const ejercicios = {
-
     "press banca": {
-        grupo: "Pecho",
-        musculos: "Pectoral mayor, tríceps y deltoides anterior",
-        descripcion: "Ejercicio de empuje realizado normalmente con barra.",
-        tecnica: "Acuéstate en el banco, coloca los pies firmes en el suelo, toma la barra con un agarre cómodo, bájala de forma controlada hacia el pecho y empújala nuevamente.",
-        errores: "Evita rebotar la barra, levantar demasiado los hombros o perder el control durante el movimiento.",
-        variantes: "Press inclinado, press declinado y press con mancuernas.",
-        nivel: "Principiante a avanzado"
+        grupo: "pecho",
+        musculos: "pectorales, tríceps y deltoides anterior",
+        tecnica: "Acuéstate en el banco, coloca los pies firmes en el suelo, baja la barra de forma controlada hacia el pecho y vuelve a empujarla.",
+        errores: "No rebotes la barra, no pierdas el control y evita utilizar un peso que no puedas manejar correctamente.",
+        variantes: "Press inclinado, press declinado y press con mancuernas."
     },
 
     "press inclinado": {
-        grupo: "Pecho",
-        musculos: "Pectoral superior, tríceps y deltoides anterior",
-        descripcion: "Variante del press de pecho realizada con el banco inclinado.",
-        tecnica: "Apoya completamente la espalda en el banco, mantén los pies firmes y baja el peso lentamente antes de empujar.",
-        errores: "No uses un peso que no puedas controlar ni rebotes durante el movimiento.",
-        variantes: "Barra, mancuernas y máquina.",
-        nivel: "Intermedio"
+        grupo: "pecho",
+        musculos: "pectoral superior, tríceps y deltoides anterior",
+        tecnica: "Utiliza un banco inclinado, mantén los pies firmes y baja el peso de manera controlada antes de empujar.",
+        errores: "Evita bajar el peso sin control o utilizar demasiado peso.",
+        variantes: "Barra, mancuernas y máquina."
     },
 
     "flexiones": {
-        grupo: "Pecho",
-        musculos: "Pectorales, tríceps, hombros y abdomen",
-        descripcion: "Ejercicio con el peso corporal que trabaja principalmente el tren superior.",
-        tecnica: "Coloca las manos aproximadamente a la altura de los hombros, mantén el cuerpo alineado y baja controladamente.",
-        errores: "Evita dejar caer la cadera o mover el cuerpo sin control.",
-        variantes: "Flexiones inclinadas, normales y con diferentes posiciones de manos.",
-        nivel: "Principiante"
-    },
-
-    "aperturas": {
-        grupo: "Pecho",
-        musculos: "Pectorales",
-        descripcion: "Ejercicio de aislamiento para trabajar el pecho.",
-        tecnica: "Realiza el movimiento de forma controlada y evita estirar demasiado los brazos.",
-        errores: "No utilices demasiado peso ni hagas movimientos bruscos.",
-        variantes: "Mancuernas, máquina y poleas.",
-        nivel: "Principiante a intermedio"
+        grupo: "pecho",
+        musculos: "pectorales, tríceps, hombros y abdomen",
+        tecnica: "Coloca las manos aproximadamente al ancho de los hombros, mantén el cuerpo alineado y baja de forma controlada.",
+        errores: "No dejes caer la cadera ni hagas movimientos bruscos.",
+        variantes: "Flexiones inclinadas, normales y diferentes posiciones de manos."
     },
 
     "jalon al pecho": {
-        grupo: "Espalda",
-        musculos: "Dorsales, bíceps y músculos de la espalda",
-        descripcion: "Ejercicio de tracción vertical realizado normalmente en polea.",
-        tecnica: "Siéntate, fija las piernas y lleva la barra hacia la parte superior del pecho manteniendo el movimiento controlado.",
-        errores: "Evita balancear demasiado el cuerpo o tirar de la barra con movimientos bruscos.",
-        variantes: "Agarre amplio, cerrado y diferentes accesorios.",
-        nivel: "Principiante"
+        grupo: "espalda",
+        musculos: "dorsales, bíceps y músculos de la espalda",
+        tecnica: "Siéntate correctamente, fija las piernas y lleva la barra hacia la parte superior del pecho de manera controlada.",
+        errores: "Evita balancearte demasiado o tirar de la barra bruscamente.",
+        variantes: "Agarre amplio, cerrado y diferentes accesorios."
     },
 
-    "remo maquina": {
-        grupo: "Espalda",
-        musculos: "Dorsales, romboides, trapecios y bíceps",
-        descripcion: "Ejercicio de tracción horizontal realizado en una máquina.",
-        tecnica: "Mantén el torso estable y lleva los agarres hacia el cuerpo controladamente.",
-        errores: "Evita encorvar demasiado la espalda o utilizar impulso.",
-        variantes: "Remo con cable, máquina o mancuerna.",
-        nivel: "Principiante"
-    },
-
-    "remo mancuerna": {
-        grupo: "Espalda",
-        musculos: "Dorsales, romboides, trapecios y bíceps",
-        descripcion: "Ejercicio unilateral para trabajar la espalda.",
-        tecnica: "Apoya una mano y una rodilla si lo necesitas, mantén la espalda estable y lleva la mancuerna hacia el torso.",
-        errores: "No gires excesivamente el cuerpo ni utilices impulso.",
-        variantes: "Remo con barra, máquina o cable.",
-        nivel: "Intermedio"
+    "remo": {
+        grupo: "espalda",
+        musculos: "dorsales, romboides, trapecios y bíceps",
+        tecnica: "Mantén el torso estable y lleva el agarre hacia tu cuerpo controlando tanto la subida como la bajada.",
+        errores: "Evita utilizar demasiado impulso o encorvar excesivamente la espalda.",
+        variantes: "Remo con máquina, mancuerna, barra o polea."
     },
 
     "dominadas": {
-        grupo: "Espalda",
-        musculos: "Dorsales, bíceps, antebrazos y músculos de la espalda",
-        descripcion: "Ejercicio de tracción vertical utilizando el peso corporal.",
-        tecnica: "Sujeta la barra, mantén el cuerpo controlado y realiza la subida sin balancearte excesivamente.",
+        grupo: "espalda",
+        musculos: "dorsales, bíceps y antebrazos",
+        tecnica: "Sujeta la barra y eleva tu cuerpo de forma controlada evitando balancearte excesivamente.",
         errores: "Evita utilizar demasiado impulso.",
-        variantes: "Dominadas asistidas y diferentes agarres.",
-        nivel: "Intermedio a avanzado"
+        variantes: "Dominadas asistidas y diferentes agarres."
     },
 
     "sentadilla": {
-        grupo: "Piernas",
-        musculos: "Cuádriceps, glúteos, isquiotibiales y músculos estabilizadores",
-        descripcion: "Ejercicio compuesto fundamental para trabajar las piernas.",
-        tecnica: "Coloca los pies en una posición cómoda, flexiona cadera y rodillas manteniendo el torso estable y vuelve a subir.",
-        errores: "Evita perder el control o utilizar una carga que no puedas manejar correctamente.",
-        variantes: "Sentadilla libre, goblet y diferentes variantes.",
-        nivel: "Principiante a avanzado"
+        grupo: "piernas",
+        musculos: "cuádriceps, glúteos, isquiotibiales y músculos estabilizadores",
+        tecnica: "Coloca los pies en una posición cómoda, flexiona cadera y rodillas de manera controlada y vuelve a subir.",
+        errores: "No pierdas el control del movimiento ni utilices una carga que no puedas manejar correctamente.",
+        variantes: "Sentadilla libre, goblet y otras variantes."
     },
 
     "prensa": {
-        grupo: "Piernas",
-        musculos: "Cuádriceps, glúteos e isquiotibiales",
-        descripcion: "Ejercicio de piernas realizado en una máquina de prensa.",
+        grupo: "piernas",
+        musculos: "cuádriceps, glúteos e isquiotibiales",
         tecnica: "Coloca los pies firmes en la plataforma y empuja controladamente sin bloquear las rodillas.",
-        errores: "No bajes más de lo que puedas controlar ni despegues la espalda del respaldo.",
-        variantes: "Diferentes posiciones de pies y máquinas.",
-        nivel: "Principiante"
-    },
-
-    "extension de piernas": {
-        grupo: "Piernas",
-        musculos: "Cuádriceps",
-        descripcion: "Ejercicio de aislamiento para la parte frontal del muslo.",
-        tecnica: "Ajusta la máquina, mantén la espalda apoyada y extiende las piernas de forma controlada.",
-        errores: "Evita realizar movimientos bruscos o utilizar demasiado peso.",
-        variantes: "Diferentes máquinas.",
-        nivel: "Principiante"
-    },
-
-    "curl femoral": {
-        grupo: "Piernas",
-        musculos: "Isquiotibiales",
-        descripcion: "Ejercicio de aislamiento para la parte posterior del muslo.",
-        tecnica: "Ajusta correctamente la máquina y flexiona las piernas controladamente.",
-        errores: "No utilices impulso ni demasiado peso.",
-        variantes: "Curl sentado o acostado.",
-        nivel: "Principiante"
+        errores: "No despegues la espalda del respaldo ni utilices una carga que no puedas controlar.",
+        variantes: "Diferentes posiciones de pies y máquinas."
     },
 
     "zancadas": {
-        grupo: "Piernas",
-        musculos: "Cuádriceps, glúteos e isquiotibiales",
-        descripcion: "Ejercicio unilateral que trabaja las piernas y el equilibrio.",
-        tecnica: "Da un paso, flexiona las rodillas de manera controlada y regresa a la posición inicial.",
-        errores: "Evita perder el equilibrio o realizar pasos demasiado inestables.",
-        variantes: "Zancadas caminando, estáticas o con mancuernas.",
-        nivel: "Principiante"
-    },
-
-    "pantorrillas": {
-        grupo: "Pantorrillas",
-        musculos: "Gastrocnemio y sóleo",
-        descripcion: "Ejercicio para trabajar la parte inferior de las piernas.",
-        tecnica: "Eleva los talones lentamente y baja de forma controlada.",
-        errores: "Evita hacer rebotes o utilizar un movimiento demasiado corto.",
-        variantes: "De pie, sentado o en máquina.",
-        nivel: "Principiante"
-    },
-
-    "press hombros": {
-        grupo: "Hombros",
-        musculos: "Deltoides y tríceps",
-        descripcion: "Ejercicio de empuje vertical para los hombros.",
-        tecnica: "Mantén una postura estable y empuja el peso hacia arriba de manera controlada.",
-        errores: "Evita utilizar demasiado peso o arquear excesivamente la espalda.",
-        variantes: "Mancuernas, barra y máquina.",
-        nivel: "Intermedio"
-    },
-
-    "elevaciones laterales": {
-        grupo: "Hombros",
-        musculos: "Deltoides laterales",
-        descripcion: "Ejercicio de aislamiento para la parte lateral de los hombros.",
-        tecnica: "Eleva los brazos hacia los lados con control y vuelve lentamente.",
-        errores: "Evita balancearte o utilizar demasiado peso.",
-        variantes: "Mancuernas, polea o máquina.",
-        nivel: "Principiante"
-    },
-
-    "elevaciones posteriores": {
-        grupo: "Hombros",
-        musculos: "Deltoides posteriores y músculos de la espalda superior",
-        descripcion: "Ejercicio para la parte posterior de los hombros.",
-        tecnica: "Inclina el torso de forma estable y abre los brazos controladamente.",
-        errores: "Evita utilizar impulso.",
-        variantes: "Mancuernas, polea o máquina.",
-        nivel: "Principiante"
+        grupo: "piernas",
+        musculos: "cuádriceps, glúteos e isquiotibiales",
+        tecnica: "Da un paso hacia delante, flexiona las rodillas de manera controlada y vuelve a la posición inicial.",
+        errores: "Evita perder el equilibrio o hacer movimientos bruscos.",
+        variantes: "Zancadas caminando, estáticas o con mancuernas."
     },
 
     "curl biceps": {
-        grupo: "Bíceps",
-        musculos: "Bíceps y músculos del antebrazo",
-        descripcion: "Ejercicio clásico para trabajar la flexión del codo.",
+        grupo: "bíceps",
+        musculos: "bíceps y antebrazos",
         tecnica: "Mantén los codos relativamente estables y flexiona los brazos controladamente.",
-        errores: "Evita balancear el cuerpo.",
-        variantes: "Barra, mancuernas, polea y banco predicador.",
-        nivel: "Principiante"
+        errores: "Evita balancear el cuerpo para levantar el peso.",
+        variantes: "Barra, mancuernas, polea y banco predicador."
     },
 
     "curl martillo": {
-        grupo: "Bíceps",
-        musculos: "Bíceps, braquial y antebrazo",
-        descripcion: "Curl realizado con las palmas enfrentadas.",
-        tecnica: "Mantén las manos en posición neutra y flexiona los codos sin balancearte.",
-        errores: "No utilices impulso ni demasiado peso.",
-        variantes: "Mancuernas
+        grupo: "bíceps",
+        musculos: "bíceps, braquial y antebrazo",
+        tecnica: "Mantén las palmas enfrentadas y flexiona los codos sin balancearte.",
+        errores: "Evita utilizar demasiado peso o impulso.",
+        variantes: "Mancuernas y polea."
+    },
+
+    "triceps polea": {
+        grupo: "tríceps",
+        musculos: "tríceps",
+        tecnica: "Mantén los codos cerca del cuerpo y extiende los brazos lentamente.",
+        errores: "Evita mover demasiado los hombros.",
+        variantes: "Cuerda, barra y diferentes agarres."
+    },
+
+    "press hombros": {
+        grupo: "hombros",
+        musculos: "deltoides y tríceps",
+        tecnica: "Mantén una postura estable y empuja el peso hacia arriba de manera controlada.",
+        errores: "Evita utilizar demasiado peso o arquear excesivamente la espalda.",
+        variantes: "Mancuernas, barra y máquina."
+    },
+
+    "elevaciones laterales": {
+        grupo: "hombros",
+        musculos: "deltoides laterales",
+        tecnica: "Eleva los brazos hacia los lados con control y vuelve lentamente.",
+        errores: "Evita balancearte o utilizar demasiado peso.",
+        variantes: "Mancuernas, polea y máquina."
+    },
+
+    "abdominales": {
+        grupo: "abdomen",
+        musculos: "recto abdominal y músculos estabilizadores",
+        tecnica: "Realiza el movimiento lentamente y evita tirar del cuello.",
+        errores: "Evita hacer movimientos bruscos.",
+        variantes: "Crunch, elevaciones de piernas y otros ejercicios de core."
+    },
+
+    "plancha": {
+        grupo: "abdomen",
+        musculos: "abdomen, core, hombros y músculos estabilizadores",
+        tecnica: "Mantén el cuerpo alineado mientras sostienes la posición y contraes el abdomen.",
+        errores: "Evita hundir o levantar demasiado la cadera.",
+        variantes: "Plancha lateral y otras variantes."
+    }
+};
+
+
+// ==========================================
+// NORMALIZAR TEXTO
+// ==========================================
+
+function normalizar(texto) {
+    return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+}
+
+
+// ==========================================
+// MOSTRAR MENSAJE
+// ==========================================
+
+function agregarMensaje(tipo, texto) {
+
+    const mensaje = document.createElement("div");
+
+    mensaje.className = "mensaje " + tipo;
+
+    mensaje.innerHTML = texto;
+
+    chat.appendChild(mensaje);
+
+    chat.scrollTop = chat.scrollHeight;
+}
+
+
+// ==========================================
+// BUSCAR EJERCICIO
+// ==========================================
+
+function buscarEjercicio(texto) {
+
+    const pregunta = normalizar(texto);
+
+    for (const nombre in ejercicios) {
+
+        if (pregunta.includes(nombre)) {
+            return ejercicios[nombre];
+        }
+    }
+
+    return null;
+}
+
+
+// ==========================================
+// RESPUESTA DEL CHATBOT
+// ==========================================
+
+function responder(pregunta) {
+
+    const texto = normalizar(pregunta);
+
+    // SALUDOS
+    if (
+        texto === "hola" ||
+        texto.includes("hola gymbot") ||
+        texto.includes("buenas") ||
+        texto.includes("hey")
+    ) {
+        return "¡Hola! 👋 Soy GYMBOT. ¿Qué quieres saber sobre el gimnasio?";
+    }
+
+
+    // PRESENTACIÓN
+    if (
+        texto.includes("quien eres") ||
+        texto.includes("que eres")
+    ) {
+        return "Soy <b>GYMBOT</b> 💪, un chatbot escolar especializado en ejercicio, entrenamiento y conocimientos básicos del gimnasio.";
+    }
+
+
+    // AYUDA
+    if (
+        texto.includes("ayuda") ||
+        texto.includes("que puedes hacer") ||
+        texto.includes("que sabes")
+    ) {
+        return `
+        Puedo conversar contigo sobre:<br><br>
+        💪 Ejercicios<br>
+        🧠 Músculos<br>
+        📖 Técnica<br>
+        ⚠️ Errores comunes<br>
+        🔄 Variantes<br>
+        🏋️ Máquinas<br>
+        🦵 Piernas<br>
+        💪 Pecho<br>
+        🏋️ Espalda<br>
+        🔥 Hombros<br>
+        💪 Brazos<br>
+        🔥 Abdomen<br>
+        🏃 Cardio<br>
+        🔥 Calentamiento<br>
+        😴 Descanso<br><br>
+        Puedes preguntarme cualquier cosa relacionada con estos temas.
+        `;
+    }
+
+
+    // CALENTAMIENTO
+    if (texto.includes("calentamiento")) {
+        return "Antes de entrenar puedes hacer unos minutos de actividad suave y movimientos dinámicos. El objetivo es preparar el cuerpo para la sesión.";
+    }
+
+
+    // CARDIO
+    if (texto.includes("cardio")) {
+        return "Algunos ejemplos de cardio son caminar, correr, bicicleta, nadar o utilizar máquinas cardiovasculares. La intensidad depende de la actividad y del nivel de la persona.";
+    }
+
+
+    // DESCANSO
+    if (texto.includes("descanso")) {
+        return "El descanso es una parte importante del entrenamiento. El cuerpo necesita tiempo para recuperarse entre sesiones.";
+    }
+
+
+    // PECHO
+    if (
+        texto.includes("ejercicios para pecho") ||
+        texto.includes("ejercicios de pecho")
+    ) {
+        return "Para pecho puedes consultar press banca, press inclinado, flexiones y aperturas. 💪 ¿Quieres que te explique alguno?";
+    }
+
+
+    // ESPALDA
+    if (
+        texto.includes("ejercicios para espalda") ||
+        texto.includes("ejercicios de espalda")
+    ) {
+        return "Para espalda puedes consultar jalón al pecho, remo, dominadas y otros ejercicios de tracción. 🏋️ ¿Cuál quieres conocer?";
+    }
+
+
+    // PIERNAS
+    if (
+        texto.includes("ejercicios para piernas") ||
+        texto.includes("ejercicios de piernas")
+    ) {
+        return "Para piernas puedes consultar sentadillas, prensa, zancadas y curl femoral. 🦵 ¿Quieres información sobre alguno?";
+    }
+
+
+    // EJERCICIO ESPECÍFICO
+    const ejercicio = buscarEjercicio(pregunta);
+
+    if (ejercicio) {
+
+        if (
+            texto.includes("musculo") ||
+            texto.includes("musculos") ||
+            texto.includes("trabaja")
+        ) {
+            return `💪 Este ejercicio trabaja principalmente: <b>${ejercicio.musculos}</b>.`;
+        }
+
+
+        if (
+            texto.includes("como se hace") ||
+            texto.includes("tecnica") ||
+            texto.includes("hacer")
+        ) {
+            return `📖 Para realizarlo: ${ejercicio.tecnica}`;
+        }
+
+
+        if (
+            texto.includes("error") ||
+            texto.includes("errores")
+        ) {
+            return `⚠️ Algunos errores comunes son: ${ejercicio.errores}`;
+        }
+
+
+        if (
+            texto.includes("variante") ||
+            texto.includes("variantes")
+        ) {
+            return `🔄 Algunas variantes son: ${ejercicio.variantes}`;
+        }
+
+
+        return `
+        💪 <b>Grupo:</b> ${ejercicio.grupo}<br><br>
+        🧠 <b>Músculos:</b> ${ejercicio.musculos}<br><br>
+        📖 <b>Cómo se realiza:</b> ${ejercicio.tecnica}<br><br>
+        ⚠️ <b>Errores:</b> ${ejercicio.errores}<br><br>
+        🔄 <b>Variantes:</b> ${ejercicio.variantes}
+        `;
+    }
+
+
+    // DESPEDIDA
+    if (
+        texto.includes("adios") ||
+        texto.includes("hasta luego")
+    ) {
+        return "¡Hasta luego! 👋 Cuando quieras seguir hablando de gimnasio, aquí estará GYMBOT.";
+    }
+
+
+    // RESPUESTA GENERAL
+    return `
+    🤔 Todavía no tengo información específica sobre eso en mi base de conocimientos.<br><br>
+    Puedes preguntarme, por ejemplo:<br>
+    • ¿Qué músculos trabaja el press banca?<br>
+    • ¿Cómo se hace una sentadilla?<br>
+    • ¿Qué errores tiene el curl de bíceps?<br>
+    • ¿Qué ejercicios hay para espalda?<br>
+    • ¿Qué variantes tiene el press banca?
+    `;
+}
+
+
+// ==========================================
+// ENVIAR MENSAJE
+// ==========================================
+
+function enviarMensaje() {
+
+    const texto = entrada.value.trim();
+
+    if (texto === "") {
+        return;
+    }
+
+    // Mensaje del usuario
+    agregarMensaje("usuario", texto);
+
+    // Limpiar caja
+    entrada.value = "";
+
+    // Respuesta del bot
+    setTimeout(function() {
+
+        const respuesta = responder(texto);
+
+        agregarMensaje("bot", respuesta);
+
+    }, 400);
+}
+
+
+// ==========================================
+// ENTER PARA ENVIAR
+// ==========================================
+
+entrada.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+        enviarMensaje();
+    }
+
+});
+
+
+// ==========================================
+// MENSAJE INICIAL
+// ==========================================
+
+agregarMensaje(
+    "bot",
+    "¡Hola! 👋 Soy <b>GYMBOT</b>. Podemos conversar sobre ejercicios, músculos, técnica, errores, variantes, cardio y mucho más. 💪"
+);
