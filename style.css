@@ -1,1 +1,151 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
+body {
+    font-family: Arial, sans-serif;
+    background: #0f1115;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+.contenedor {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ENCABEZADO */
+.encabezado {
+    background: #171a21;
+    padding: 18px;
+    text-align: center;
+    border-bottom: 1px solid #30343d;
+}
+
+.encabezado h1 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.encabezado p {
+    color: #aeb4c0;
+    font-size: 14px;
+}
+
+/* ÁREA DEL CHAT */
+.chat {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* MENSAJES */
+.mensaje {
+    max-width: 80%;
+    padding: 12px 15px;
+    margin-bottom: 14px;
+    border-radius: 15px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.bot {
+    background: #1d222b;
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+}
+
+.usuario {
+    background: #2563eb;
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+}
+
+/* CAJA DE ESCRIBIR */
+.entrada {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background: #171a21;
+    border-top: 1px solid #30343d;
+}
+
+.entrada input {
+    flex: 1;
+    padding: 14px;
+    border: 1px solid #3a404b;
+    border-radius: 12px;
+    outline: none;
+    background: #0f1115;
+    color: white;
+    font-size: 15px;
+}
+
+.entrada input:focus {
+    border-color: #2563eb;
+}
+
+.entrada button {
+    padding: 0 20px;
+    border: none;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.entrada button:hover {
+    background: #1d4ed8;
+}
+
+/* BOTONES DE TEMAS */
+.botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 20px;
+}
+
+.botones button {
+    background: #1d222b;
+    color: white;
+    border: 1px solid #3a404b;
+    padding: 9px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.botones button:hover {
+    background: #2563eb;
+}
+
+/* MÓVIL */
+@media (max-width: 600px) {
+    .encabezado h1 {
+        font-size: 23px;
+    }
+
+    .chat {
+        padding: 12px;
+    }
+
+    .mensaje {
+        max-width: 90%;
+    }
+
+    .entrada {
+        padding: 10px;
+    }
+
+    .entrada button {
+        padding: 0 15px;
+    }
+}
