@@ -326,6 +326,25 @@ function responder(preguntaOriginal) {
 
 Puedes preguntarme directamente lo que necesites.`;
     }
+    // PREGUNTAS SOBRE QUÉ HACER PARA ENTRENAR
+
+if (
+    texto.includes("que debo hacer para entrenar") ||
+    texto.includes("que debo de hacer para entrenar") ||
+    texto.includes("que tengo que hacer para entrenar") ||
+    texto.includes("como debo entrenar") ||
+    texto.includes("como puedo entrenar") ||
+    texto.includes("que hago para entrenar")
+) {
+    return `💪 Si estás empezando, puedes organizar tu entrenamiento así:
+
+🔥 1. Calentamiento
+🏋️ 2. Ejercicios principales
+⏱️ 3. Descansos entre series
+🧘 4. Regresar a la calma al terminar
+
+Puedes decirme qué quieres entrenar, por ejemplo: pecho, espalda, piernas u hombros, y te mostraré una rutina básica.`;
+}
 
 
     // RUTINA GENERAL
