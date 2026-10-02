@@ -1,1668 +1,757 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GymBot 2.0 🏋️</title>
-
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --fondo: #eef2f7;
-  --tarjeta: #ffffff;
-  --texto: #111827;
-  --secundario: #6b7280;
-  --principal: #2563eb;
-  --principal-oscuro: #1d4ed8;
-  --bot: #f3f4f6;
-  --borde: #e5e7eb;
-}
-
-body.oscuro {
-  --fondo: #111827;
-  --tarjeta: #1f2937;
-  --texto: #f9fafb;
-  --secundario: #d1d5db;
-  --bot: #374151;
-  --borde: #4b5563;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--fondo);
-  color: var(--texto);
-  min-height: 100vh;
-  transition: 0.3s;
-}
-
-header {
-  background: #111827;
-  color: white;
-  padding: 18px;
-  text-align: center;
-}
-
-header h1 {
-  font-size: 28px;
-  margin-bottom: 5px;
-}
-
-header p {
-  font-size: 14px;
-  opacity: 0.8;
-}
-
-.menu {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  padding: 12px;
-  background: var(--tarjeta);
-  border-bottom: 1px solid var(--borde);
-}
-
-.menu button {
-  background: var(--principal);
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 9px 14px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.menu button:hover {
-  background: var(--principal-oscuro);
-}
-
-.contenedor {
-  max-width: 850px;
-  margin: auto;
-  padding: 15px;
-}
-
-.presentacion {
-  background: var(--tarjeta);
-  border-radius: 18px;
-  padding: 18px;
-  margin-bottom: 15px;
-  border: 1px solid var(--borde);
-}
-
-.presentacion h2 {
-  margin-bottom: 8px;
-}
-
-.presentacion p {
-  color: var(--secundario);
-  line-height: 1.5;
-}
-
-.pantalla {
-  display: none;
-}
-
-.pantalla.activa {
-  display: block;
-}
-
-.chat {
-  padding-bottom: 130px;
-}
-
-.mensaje {
-  display: flex;
-  margin: 12px 0;
-  animation: aparecer 0.25s ease;
-}
-
-@keyframes aparecer {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.mensaje.bot {
-  justify-content: flex-start;
-}
-
-.mensaje.usuario {
-  justify-content: flex-end;
-}
-
-.burbuja {
-  max-width: 82%;
-  padding: 13px 16px;
-  border-radius: 18px;
-  line-height: 1.5;
-  word-wrap: break-word;
-}
-
-.mensaje.bot .burbuja {
-  background: var(--bot);
-  border-bottom-left-radius: 5px;
-}
-
-.mensaje.usuario .burbuja {
-  background: var(--principal);
-  color: white;
-  border-bottom-right-radius: 5px;
-}
-
-.avatar {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background: var(--principal);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 7px;
-  flex-shrink: 0;
-}
-
-.usuario .avatar {
-  display: none;
-}
-
-.tarjeta {
-  background: var(--tarjeta);
-  border: 1px solid var(--borde);
-  border-radius: 16px;
-  padding: 15px;
-  margin-top: 10px;
-}
-
-.tarjeta h3 {
-  margin-bottom: 8px;
-}
-
-.tarjeta p {
-  color: var(--secundario);
-  line-height: 1.5;
-}
-
-.lista {
-  margin: 12px 0 12px 20px;
-  line-height: 1.8;
-}
-
-.boton-card {
-  margin-top: 10px;
-  border: none;
-  background: var(--principal);
-  color: white;
-  padding: 10px 15px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.boton-card:hover {
-  background: var(--principal-oscuro);
-}
-
-.ejercicios-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.ejercicio-card {
-  background: var(--tarjeta);
-  border: 1px solid var(--borde);
-  border-radius: 16px;
-  padding: 15px;
-}
-
-.ejercicio-icono {
-  font-size: 50px;
-  margin-bottom: 8px;
-}
-
-.ejercicio-card h3 {
-  margin-bottom: 5px;
-}
-
-.ejercicio-card p {
-  color: var(--secundario);
-  line-height: 1.4;
-}
-
-.entrada-area {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--tarjeta);
-  border-top: 1px solid var(--borde);
-  padding: 10px;
-  z-index: 20;
-}
-
-.entrada {
-  max-width: 850px;
-  margin: auto;
-  display: flex;
-  gap: 8px;
-}
-
-.entrada input {
-  flex: 1;
-  padding: 13px;
-  border: 1px solid var(--borde);
-  border-radius: 25px;
-  outline: none;
-  background: var(--fondo);
-  color: var(--texto);
-}
-
-.entrada button {
-  border: none;
-  background: var(--principal);
-  color: white;
-  border-radius: 25px;
-  padding: 0 18px;
-  cursor: pointer;
-}
-
-.botones-rapidos {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-
-.boton-rapido {
-  border: 1px solid var(--borde);
-  background: var(--tarjeta);
-  color: var(--texto);
-  border-radius: 18px;
-  padding: 8px 11px;
-  cursor: pointer;
-}
-
-.nota {
-  background: var(--bot);
-  border-radius: 12px;
-  padding: 12px;
-  margin-top: 12px;
-  line-height: 1.5;
-}
-
-.contador {
-  text-align: center;
-  font-size: 30px;
-  font-weight: bold;
-  margin: 15px 0;
-}
-
-.herramienta {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.herramienta button {
-  margin: 5px;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 10px;
-  background: var(--principal);
-  color: white;
-  cursor: pointer;
-}
-
-.timer {
-  font-size: 55px;
-  font-weight: bold;
-  text-align: center;
-  margin: 20px 0;
-}
-
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 24px;
-  }
-
-  .ejercicios-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .burbuja {
-    max-width: 90%;
-  }
-
-  .menu button {
-    font-size: 12px;
-    padding: 8px 11px;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<header>
-  <h1>GymBot 2.0 🏋️</h1>
-  <p>Tu asistente escolar sobre ejercicio y hábitos saludables</p>
-</header>
-
-<nav class="menu">
-  <button onclick="mostrarPantalla('chat')">💬 Chat</button>
-  <button onclick="mostrarPantalla('ejercicios')">🏋️ Ejercicios</button>
-  <button onclick="mostrarPantalla('rutinas')">📋 Rutinas</button>
-  <button onclick="mostrarPantalla('herramientas')">🛠️ Herramientas</button>
-  <button onclick="cambiarModo()">🌙 Modo</button>
-</nav>
-
-<main class="contenedor">
-
-<section id="pantalla-chat" class="pantalla activa">
-
-  <div class="presentacion">
-    <h2>🤖 ¡Hola! Soy GymBot</h2>
-    <p>
-      Puedo ayudarte a aprender sobre ejercicios,
-      calentamiento, descanso, hidratación y rutinas.
-    </p>
-
-    <div class="botones-rapidos">
-
-      <button class="boton-rapido"
-        onclick="preguntar('¿Qué ejercicios hay para brazos?')">
-        💪 Brazos
-      </button>
-
-      <button class="boton-rapido"
-        onclick="preguntar('¿Qué ejercicios hay para piernas?')">
-        🦵 Piernas
-      </button>
-
-      <button class="boton-rapido"
-        onclick="preguntar('¿Cómo hago calentamiento?')">
-        🔥 Calentamiento
-      </button>
-
-      <button class="boton-rapido"
-        onclick="preguntar('¿Por qué es importante descansar?')">
-        😴 Descanso
-      </button>
-
-      <button class="boton-rapido"
-        onclick="preguntar('¿Cuánta agua debo tomar?')">
-        💧 Hidratación
-      </button>
-
-    </div>
-  </div>
-
-  <div id="chat" class="chat">
-
-    <div class="mensaje bot">
-
-      <div class="avatar">
-        🤖
-      </div>
-
-      <div class="burbuja">
-        ¡Hola! 👋 Soy <b>GymBot</b>.<br><br>
-        Pregúntame lo que quieras sobre ejercicio,
-        entrenamiento y hábitos saludables.
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<section id="pantalla-ejercicios" class="pantalla">
-
-  <div class="presentacion">
-
-    <h2>🏋️ Ejercicios</h2>
-
-    <p>
-      Selecciona un ejercicio para conocer información
-      básica sobre cómo realizarlo.
-    </p>
-
-  </div>
-
-
-  <div class="ejercicios-grid">
-
-    <div class="ejercicio-card">
-
-      <div class="ejercicio-icono">💪</div>
-
-      <h3>Curl de bíceps</h3>
-
-      <p>
-        Ejercicio para trabajar principalmente
-        los bíceps.
-      </p>
-
-      <button
-        class="boton-card"
-        onclick="verEjercicio('curl')">
-        Ver información
-      </button>
-
-    </div>
-
-
-    <div class="ejercicio-card">
-
-      <div class="ejercicio-icono">🦵</div>
-
-      <h3>Sentadilla</h3>
-
-      <p>
-        Movimiento que trabaja principalmente
-        las piernas.
-      </p>
-
-      <button
-        class="boton-card"
-        onclick="verEjercicio('sentadilla')">
-        Ver información
-      </button>
-
-    </div>
-
-
-    <div class="ejercicio-card">
-
-      <div class="ejercicio-icono">🏋️</div>
-
-      <h3>Flexiones</h3>
-
-      <p>
-        Ejercicio con el peso corporal para
-        pecho y brazos.
-      </p>
-
-      <button
-        class="boton-card"
-        onclick="verEjercicio('flexiones')">
-        Ver información
-      </button>
-
-    </div>
-
-
-    <div class="ejercicio-card">
-
-      <div class="ejercicio-icono">🔙</div>
-
-      <h3>Remo</h3>
-
-      <p>
-        Movimiento utilizado para trabajar
-        la espalda.
-      </p>
-
-      <button
-        class="boton-card"
-        onclick="verEjercicio('remo')">
-        Ver información
-      </button>
-
-    </div>
-
-
-    <div class="ejercicio-card">
-
-      <div class="ejercicio-icono">🔥</div>
-
-      <h3>Plancha</h3>
-
-      <p>
-        Ejercicio isométrico para la zona media.
-      </p>
-
-      <button
-        class="boton-card"
-        onclick="verEjercicio('plancha')">
-        Ver información
-      </button>
-
-    </div>
-
-
-    <div class="ejercicio-card">
-
-      <div class="ejercicio-icono">🚶</div>
-
-      <h3>Zancadas</h3>
-
-      <p>
-        Ejercicio que trabaja principalmente
-        las piernas.
-      </p>
-
-      <button
-        class="boton-card"
-        onclick="verEjercicio('zancadas')">
-        Ver información
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <div id="informacion-ejercicio"></div>
-
-</section>
-<section id="pantalla-rutinas" class="pantalla">
-
-  <div class="presentacion">
-
-    <h2>📋 Rutinas</h2>
-
-    <p>
-      Aquí puedes consultar ejemplos de rutinas
-      sencillas para aprender cómo organizar
-      una sesión de ejercicio.
-    </p>
-
-  </div>
-
-
-  <div class="tarjeta">
-
-    <h3>🌱 Rutina para principiantes</h3>
-
-    <p>
-      Una rutina sencilla para conocer diferentes
-      movimientos y trabajar todo el cuerpo.
-    </p>
-
-    <ul class="lista">
-
-      <li>Calentamiento: 5 minutos</li>
-
-      <li>Sentadillas: 10 repeticiones</li>
-
-      <li>Flexiones: 5 a 10 repeticiones</li>
-
-      <li>Zancadas: 8 por cada pierna</li>
-
-      <li>Plancha: 15 a 20 segundos</li>
-
-      <li>Estiramiento suave al terminar</li>
-
-    </ul>
-
-    <div class="nota">
-      💡 La cantidad de repeticiones puede adaptarse
-      al nivel de cada persona. Lo importante es
-      aprender la técnica y escuchar al cuerpo.
-    </div>
-
-  </div>
-
-
-  <div class="tarjeta">
-
-    <h3>💪 Rutina de tren superior</h3>
-
-    <p>
-      Ejemplo educativo para conocer ejercicios
-      de brazos, pecho y espalda.
-    </p>
-
-    <ul class="lista">
-
-      <li>Curl de bíceps: 10 repeticiones</li>
-
-      <li>Flexiones: 5 a 10 repeticiones</li>
-
-      <li>Remo: 10 repeticiones</li>
-
-      <li>Descanso entre ejercicios</li>
-
-      <li>Estiramiento al finalizar</li>
-
-    </ul>
-
-  </div>
-
-
-  <div class="tarjeta">
-
-    <h3>🦵 Rutina de piernas</h3>
-
-    <p>
-      Ejemplo para aprender algunos movimientos
-      básicos de la parte inferior del cuerpo.
-    </p>
-
-    <ul class="lista">
-
-      <li>Calentamiento: 5 minutos</li>
-
-      <li>Sentadillas: 10 repeticiones</li>
-
-      <li>Zancadas: 8 por pierna</li>
-
-      <li>Puente de glúteos: 10 repeticiones</li>
-
-      <li>Estiramiento suave</li>
-
-    </ul>
-
-  </div>
-
-
-  <div class="tarjeta">
-
-    <h3>📚 ¿Por qué hacer una rutina?</h3>
-
-    <p>
-      Una rutina ayuda a organizar los ejercicios
-      y permite llevar un orden durante la actividad
-      física.
-    </p>
-
-    <div class="nota">
-      ⚠️ GymBot ofrece información educativa.
-      Si una persona tiene dolor, una lesión o alguna
-      condición médica, debe consultar a un profesional
-      de la salud.
-    </div>
-
-  </div>
-
-</section>
-
-
-<section id="pantalla-herramientas" class="pantalla">
-
-  <div class="presentacion">
-
-    <h2>🛠️ Herramientas</h2>
-
-    <p>
-      Utiliza estas herramientas sencillas para
-      acompañar tu aprendizaje sobre entrenamiento.
-    </p>
-
-  </div>
-
-
-  <div class="tarjeta">
-
-    <h3>🔢 Contador de repeticiones</h3>
-
-    <p>
-      Puedes utilizarlo para practicar el conteo
-      de repeticiones durante un ejercicio.
-    </p>
-
-    <div id="contador" class="contador">
-      0
-    </div>
-
-    <div class="herramienta">
-
-      <button onclick="cambiarContador(-1)">
-        ➖
-      </button>
-
-      <button onclick="cambiarContador(1)">
-        ➕
-      </button>
-
-      <button onclick="reiniciarContador()">
-        🔄 Reiniciar
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <div class="tarjeta">
-
-    <h3>⏱️ Temporizador de descanso</h3>
-
-    <p>
-      Un temporizador puede ayudarte a aprender
-      a respetar periodos de descanso.
-    </p>
-
-    <div id="timer" class="timer">
-      00:30
-    </div>
-
-    <div class="herramienta">
-
-      <button onclick="iniciarTimer()">
-        ▶️ Iniciar
-      </button>
-
-      <button onclick="pausarTimer()">
-        ⏸️ Pausar
-      </button>
-
-      <button onclick="reiniciarTimer()">
-        🔄 Reiniciar
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <div class="tarjeta">
-
-    <h3>💧 Hidratación</h3>
-
-    <p>
-      Durante la actividad física es importante
-      prestar atención a la sed y mantenerse hidratado.
-    </p>
-
-    <div class="nota">
-      💧 Lleva agua contigo y toma pequeños tragos
-      cuando lo necesites, especialmente si hace calor.
-    </div>
-
-  </div>
-
-
-  <div class="tarjeta">
-
-    <h3>😴 Descanso</h3>
-
-    <p>
-      El descanso permite que el cuerpo se recupere
-      después de realizar actividad física.
-    </p>
-
-    <div class="nota">
-      🌙 Dormir adecuadamente también forma parte
-      de unos hábitos saludables.
-    </div>
-
-  </div>
-
-</section>
-
-</main>
-
-
-<div class="entrada-area">
-
-  <div class="entrada">
-
-    <input
-      id="pregunta"
-      type="text"
-      placeholder="Escribe tu pregunta..."
-      autocomplete="off"
-      onkeydown="if(event.key==='Enter') enviarPregunta()"
-    >
-
-    <button onclick="enviarPregunta()">
-      ➤
-    </button>
-
-  </div>
-
-</div>
-
-
-<script>
-
-let contador = 0;
-
-let tiempo = 30;
-
-let intervalo = null;
-
-
-function mostrarPantalla(nombre) {
-
-  const pantallas =
-    document.querySelectorAll(".pantalla");
-
-  pantallas.forEach(function(pantalla) {
-
-    pantalla.classList.remove("activa");
-
-  });
-
-
-  const seleccionada =
-    document.getElementById("pantalla-" + nombre);
-
-  if (seleccionada) {
-
-    seleccionada.classList.add("activa");
-
-  }
-
+# ============================================================
+#                 BASE DE CONOCIMIENTOS FITBOT
+# ============================================================
+
+EJERCICIOS = {
+
+    # ========================================================
+    # PECHO
+    # ========================================================
+
+    "press banca": {
+        "grupo": "Pecho",
+        "musculos": "Pectoral mayor, tríceps y deltoides anterior",
+        "tipo": "Empuje",
+        "descripcion": "Ejercicio compuesto realizado normalmente con barra.",
+        "tecnica": "Coloca los pies firmes, estabiliza los hombros, baja la barra de forma controlada hacia el pecho y empuja manteniendo el movimiento controlado.",
+        "errores": "Usar demasiado peso, rebotar la barra, perder el control o levantar los pies innecesariamente.",
+        "variantes": "Press con mancuernas, press inclinado y press en máquina.",
+        "nivel": "Principiante a avanzado"
+    },
+
+    "press inclinado": {
+        "grupo": "Pecho",
+        "musculos": "Pectoral superior, tríceps y deltoides anterior",
+        "tipo": "Empuje",
+        "descripcion": "Variante del press de pecho realizada con el banco inclinado.",
+        "tecnica": "Ajusta el banco, mantén los pies firmes y baja la resistencia de manera controlada antes de empujar.",
+        "errores": "Utilizar demasiado peso, perder estabilidad o realizar movimientos bruscos.",
+        "variantes": "Barra, mancuernas y máquina.",
+        "nivel": "Intermedio"
+    },
+
+    "press declinado": {
+        "grupo": "Pecho",
+        "musculos": "Pectoral mayor y tríceps",
+        "tipo": "Empuje",
+        "descripcion": "Press realizado con el torso en una posición declinada.",
+        "tecnica": "Mantén una posición estable y controla tanto la bajada como la subida.",
+        "errores": "Exceso de peso y pérdida de control.",
+        "variantes": "Barra o mancuernas.",
+        "nivel": "Intermedio"
+    },
+
+    "flexiones": {
+        "grupo": "Pecho",
+        "musculos": "Pectorales, tríceps y hombros",
+        "tipo": "Peso corporal",
+        "descripcion": "Ejercicio de empuje utilizando el peso corporal.",
+        "tecnica": "Mantén el cuerpo alineado, baja de forma controlada y vuelve a empujar.",
+        "errores": "Dejar caer la cadera, levantar demasiado la cabeza o hacer movimientos rápidos sin control.",
+        "variantes": "Flexiones inclinadas, normales y diferentes posiciones de manos.",
+        "nivel": "Principiante"
+    },
+
+    "aperturas": {
+        "grupo": "Pecho",
+        "musculos": "Pectorales",
+        "tipo": "Aislamiento",
+        "descripcion": "Movimiento de apertura y cierre de los brazos.",
+        "tecnica": "Realiza un arco controlado y evita llevar los brazos más allá de una posición cómoda.",
+        "errores": "Utilizar demasiado peso o hacer rebotes.",
+        "variantes": "Mancuernas, máquina y polea.",
+        "nivel": "Principiante a intermedio"
+    },
+
+    "cruce polea": {
+        "grupo": "Pecho",
+        "musculos": "Pectorales",
+        "tipo": "Aislamiento",
+        "descripcion": "Ejercicio realizado con poleas para trabajar el pecho.",
+        "tecnica": "Mantén una posición estable y junta los brazos de manera controlada.",
+        "errores": "Utilizar impulso o demasiada resistencia.",
+        "variantes": "Cruce alto, medio y bajo.",
+        "nivel": "Intermedio"
+    },
+
+    # ========================================================
+    # ESPALDA
+    # ========================================================
+
+    "jalon al pecho": {
+        "grupo": "Espalda",
+        "musculos": "Dorsal ancho, bíceps y músculos de la espalda",
+        "tipo": "Tracción vertical",
+        "descripcion": "Ejercicio realizado generalmente en una máquina de polea.",
+        "tecnica": "Sujeta la barra, estabiliza el torso y lleva la barra hacia la parte superior del pecho de forma controlada.",
+        "errores": "Balancearse demasiado, utilizar impulso o tirar la barra detrás del cuello.",
+        "variantes": "Agarre amplio, cerrado y neutro.",
+        "nivel": "Principiante"
+    },
+
+    "remo maquina": {
+        "grupo": "Espalda",
+        "musculos": "Dorsales, romboides, trapecios y bíceps",
+        "tipo": "Tracción horizontal",
+        "descripcion": "Ejercicio de espalda realizado en una máquina de remo.",
+        "tecnica": "Mantén el torso estable, lleva los codos hacia atrás y regresa lentamente.",
+        "errores": "Balancear excesivamente el torso o utilizar demasiado peso.",
+        "variantes": "Remo con agarre neutro, amplio o cerrado.",
+        "nivel": "Principiante"
+    },
+
+    "remo mancuerna": {
+        "grupo": "Espalda",
+        "musculos": "Dorsal ancho, romboides, trapecio y bíceps",
+        "tipo": "Tracción horizontal",
+        "descripcion": "Remo realizado normalmente de manera unilateral.",
+        "tecnica": "Estabiliza el cuerpo y lleva la mancuerna hacia el torso manteniendo control.",
+        "errores": "Girar excesivamente el torso o utilizar impulso.",
+        "variantes": "Remo con barra o máquina.",
+        "nivel": "Intermedio"
+    },
+
+    "dominadas": {
+        "grupo": "Espalda",
+        "musculos": "Dorsales, bíceps y músculos estabilizadores",
+        "tipo": "Tracción vertical",
+        "descripcion": "Ejercicio con el peso corporal realizado en una barra.",
+        "tecnica": "Sujeta la barra, estabiliza el cuerpo y realiza la tracción de forma controlada.",
+        "errores": "Balancearse demasiado o realizar repeticiones sin control.",
+        "variantes": "Dominadas asistidas y diferentes agarres.",
+        "nivel": "Intermedio a avanzado"
+    },
+
+    "peso muerto": {
+        "grupo": "Espalda y cadena posterior",
+        "musculos": "Glúteos, isquiotibiales, espalda y músculos estabilizadores",
+        "tipo": "Ejercicio compuesto",
+        "descripcion": "Movimiento de levantamiento desde una posición cercana al suelo.",
+        "tecnica": "Mantén una posición estable, controla la cadera y conserva una postura adecuada durante todo el movimiento.",
+        "errores": "Redondear excesivamente la espalda, perder el control o utilizar una carga demasiado alta.",
+        "variantes": "Peso muerto rumano y otras variantes.",
+        "nivel": "Intermedio a avanzado"
+    },
+
+    # ========================================================
+    # PIERNAS
+    # ========================================================
+
+    "sentadilla": {
+        "grupo": "Piernas",
+        "musculos": "Cuádriceps, glúteos e isquiotibiales",
+        "tipo": "Ejercicio compuesto",
+        "descripcion": "Uno de los movimientos básicos para trabajar la parte inferior del cuerpo.",
+        "tecnica": "Coloca los pies de manera estable, flexiona cadera y rodillas y desciende manteniendo control.",
+        "errores": "Perder estabilidad, utilizar demasiado peso o hacer movimientos bruscos.",
+        "variantes": "Sentadilla libre, goblet, asistida y otras variantes.",
+        "nivel": "Principiante a avanzado"
+    },
+
+    "prensa piernas": {
+        "grupo": "Piernas",
+        "musculos": "Cuádriceps, glúteos e isquiotibiales",
+        "tipo": "Máquina",
+        "descripcion": "Ejercicio realizado en una máquina de prensa.",
+        "tecnica": "Coloca los pies firmes en la plataforma y controla tanto el descenso como el empuje.",
+        "errores": "No controlar el movimiento o utilizar una carga excesiva.",
+        "variantes": "Diferentes posiciones de pies según la máquina.",
+        "nivel": "Principiante"
+    },
+
+    "extension piernas": {
+        "grupo": "Piernas",
+        "musculos": "Cuádriceps",
+        "tipo": "Aislamiento",
+        "descripcion": "Ejercicio realizado en máquina para trabajar principalmente los cuádriceps.",
+        "tecnica": "Ajusta correctamente la máquina y extiende las piernas de forma controlada.",
+        "errores": "Realizar movimientos bruscos o utilizar demasiado peso.",
+        "variantes": "Diferentes máquinas de extensión.",
+        "nivel": "Principiante"
+    },
+
+    "curl femoral": {
+        "grupo": "Piernas",
+        "musculos": "Isquiotibiales",
+        "tipo": "Aislamiento",
+        "descripcion": "Ejercicio para la parte posterior del muslo.",
+        "tecnica": "Ajusta la máquina y flexiona las rodillas de forma controlada.",
+        "errores": "Utilizar impulso o perder el control.",
+        "variantes": "Curl sentado o acostado.",
+        "nivel": "Principiante"
+    },
+
+    "zancadas": {
+        "grupo": "Piernas",
+        "musculos": "Cuádriceps, glúteos e isquiotibiales",
+        "tipo": "Unilateral",
+        "descripcion": "Ejercicio realizado dando pasos o adoptando una posición de zancada.",
+        "tecnica": "Mantén el equilibrio y controla el descenso y regreso.",
+        "errores": "Perder el equilibrio o realizar movimientos rápidos.",
+        "variantes": "Zancadas caminando, estáticas o con mancuernas.",
+        "nivel": "Principiante a intermedio"
+    },
+
+    "pantorrillas": {
+        "grupo": "Pantorrillas",
+        "musculos": "Gastrocnemio y sóleo",
+        "tipo": "Aislamiento",
+        "descripcion": "Ejercicio destinado a trabajar la parte inferior de la pierna.",
+        "tecnica": "Eleva los talones de manera controlada y desciende lentamente.",
+        "errores": "Realizar rebotes rápidos o utilizar un rango de movimiento muy corto.",
+        "variantes": "De pie o sentado.",
+        "nivel": "Principiante"
+    },
+
+    # ========================================================
+    # HOMBROS
+    # ========================================================
+
+    "press hombros": {
+        "grupo": "Hombros",
+        "musculos": "Deltoides y tríceps",
+        "tipo": "Empuje vertical",
+        "descripcion": "Ejercicio de empuje para los hombros.",
+        "tecnica": "Mantén una postura estable y empuja la resistencia hacia arriba de manera controlada.",
+        "errores": "Arquear excesivamente la espalda o utilizar demasiado peso.",
+        "variantes": "Mancuernas, barra y máquina.",
+        "nivel": "Intermedio"
+    },
+
+    "elevaciones laterales": {
+        "grupo": "Hombros",
+        "musculos": "Deltoides lateral",
+        "tipo": "Aislamiento",
+        "descripcion": "Ejercicio para trabajar principalmente la parte lateral del hombro.",
+        "tecnica": "Eleva los brazos de manera controlada y regresa lentamente.",
+        "errores": "Balancear el cuerpo o utilizar demasiado peso.",
+        "variantes": "Mancuernas, polea y máquina.",
+        "nivel": "Principiante"
+    },
+
+    "elevaciones posteriores": {
+        "grupo": "Hombros",
+        "musculos": "Deltoides posterior y músculos de la espalda superior",
+        "tipo": "Aislamiento",
+        "descripcion": "Ejercicio para la parte posterior de los hombros.",
+        "tecnica": "Mantén el torso estable y abre los brazos de forma controlada.",
+        "errores": "Usar demasiado peso o realizar movimientos rápidos.",
+        "variantes": "Mancuernas, máquina y polea.",
+        "nivel": "Principiante"
+    },
+
+    # ========================================================
+    # BÍCEPS
+    # ========================================================
+
+    "curl biceps": {
+        "grupo": "Bíceps",
+        "musculos": "Bíceps braquial y músculos del antebrazo",
+        "tipo": "Aislamiento",
+        "descripcion": "Ejercicio clásico para flexionar el codo.",
+        "tecnica": "Mantén los brazos estables y flexiona los codos de manera controlada.",
+        "errores": "Balancear el cuerpo o utilizar demasiado peso.",
+        "variantes": "Barra, mancuernas, máquina y polea.",
+        "nivel": "Principiante"
+    },
+
+    "curl martillo": {
+        "grupo": "Bíceps",
+        "musculos": "Bíceps y braquiorradial",
+        "tipo": "Aislamiento",
+        "descripcion": "Curl realizado con agarre neutro.",
+        "tecnica": "Mantén las palmas enfrentadas y flexiona los codos sin balancearte.",
+        "errores": "Utilizar impulso o mover demasiado los hombros.",
+        "variantes": "Mancuernas y polea.",
+        "nivel": "Principiante"
+    },
+
+    "curl predicador": {
+        "grupo": "Bíceps",
+        "musculos": "Bíceps braquial",
+        "tipo": "Aislamiento",
+        "descripcion": "Ejercicio realizado sobre un banco predicador.",
+        "tecnica": "Apoya los brazos y realiza la flexión del codo lentamente.",
+        "errores": "Dejar caer rápidamente la resistencia.",
+        "variantes": "Barra, mancuerna o máquina.",
+        "nivel": "Principiante a intermedio"
+    },
+
+    # ========================================================
+    # TRÍCEPS
+    # ========================================================
+
+    "triceps polea": {
+        "grupo": "Tríceps",
+        "musculos": "Tríceps braquial",
+        "tipo": "Aislamiento",
+        "descripcion": "Ejercicio de extensión de codos realizado en polea.",
+        "tecnica": "Mantén los codos cerca del cuerpo y extiende los brazos de manera controlada.",
+        "errores": "Mover excesivamente los hombros o utilizar impulso.",
+        "variantes": "Barra, cuerda y diferentes agarres.",
+        "nivel": "Principiante"
+    },
+
+    "extension triceps": {
+        "grupo": "Tríceps",
+        "musculos": "Tríceps braquial",
+        "tipo": "Aislamiento",
+        "descripcion": "Ejercicio basado en extender el codo contra una resistencia.",
+        "tecnica": "Mantén una posición estable y realiza la extensión lentamente.",
+        "errores": "Utilizar demasiado peso o perder el control.",
+        "variantes": "Mancuerna, polea y máquina.",
+        "nivel": "Principiante"
+    },
+
+    # ========================================================
+    # ABDOMEN
+    # ========================================================
+
+    "abdominales": {
+        "grupo": "Abdomen",
+        "musculos": "Recto abdominal y músculos estabilizadores",
+        "tipo": "Core",
+        "descripcion": "Ejercicios destinados a fortalecer la zona abdominal.",
+        "tecnica": "Realiza el movimiento de forma controlada y evita utilizar impulso.",
+        "errores": "Tirar del cuello o hacer repeticiones demasiado rápidas.",
+        "variantes": "Crunch, plancha y elevaciones de piernas.",
+        "nivel": "Principiante"
+    },
+
+    "plancha": {
+        "grupo": "Abdomen",
+        "musculos": "Core, abdomen y músculos estabilizadores",
+        "tipo": "Isométrico",
+        "descripcion": "Ejercicio en el que se mantiene una posición estable durante un periodo de tiempo.",
+        "tecnica": "Mantén el cuerpo alineado y contrae el abdomen mientras respiras normalmente.",
+        "errores": "Dejar caer la cadera o levantarla demasiado.",
+        "variantes": "Plancha lateral y diferentes posiciones.",
+        "nivel": "Principiante"
+    }
 }
 
 
-function cambiarModo() {
+# ============================================================
+# INFORMACIÓN GENERAL
+# ============================================================
 
-  document.body.classList.toggle("oscuro");
+TEMAS = {
 
+    "calentamiento":
+        "El calentamiento prepara progresivamente al cuerpo para "
+        "la actividad física. Puede incluir movimiento ligero, "
+        "movilidad y ejercicios específicos de menor intensidad.",
+
+    "cardio":
+        "El cardio incluye actividades como caminar, correr, "
+        "bicicleta, natación y elíptica. La intensidad debe "
+        "adaptarse a la condición física de cada persona.",
+
+    "descanso":
+        "La recuperación es importante para el entrenamiento. "
+        "El descanso y el sueño ayudan al cuerpo a recuperarse "
+        "entre sesiones.",
+
+    "hidratacion":
+        "La hidratación ayuda a mantener un funcionamiento adecuado "
+        "durante la actividad física. Las necesidades varían según "
+        "el clima, duración del ejercicio y sudoración.",
+
+    "alimentacion":
+        "Una alimentación equilibrada puede incluir frutas, "
+        "verduras, cereales, proteínas y otras fuentes de nutrientes. "
+        "Las necesidades individuales son diferentes.",
+
+    "principiantes":
+        "Una persona que comienza debe aprender primero la técnica, "
+        "utilizar resistencias que pueda controlar y aumentar la "
+        "dificultad progresivamente.",
+
+    "progreso":
+        "Para registrar el progreso puedes anotar ejercicios, "
+        "series, repeticiones, resistencia utilizada y fechas de "
+        "entrenamiento.",
+
+    "seguridad":
+        "La técnica y el control son importantes. Si un ejercicio "
+        "produce dolor, se debe detener y buscar orientación "
+        "profesional si el problema persiste."
 }
+# ============================================================
+#                       FITBOT
+#                   CHATBOT PRINCIPAL
+# ============================================================
 
+from conocimiento import EJERCICIOS, TEMAS
 
-function enviarPregunta() {
 
-  const input =
-    document.getElementById("pregunta");
+def buscar_ejercicio(pregunta):
 
-  const pregunta =
-    input.value.trim();
+    # Primero intenta encontrar el nombre completo
+    for nombre, datos in EJERCICIOS.items():
 
-  if (pregunta === "") {
+        if nombre in pregunta:
+            return datos
 
-    return;
+    # Después busca palabras relacionadas
+    palabras = pregunta.split()
 
-  }
+    for nombre, datos in EJERCICIOS.items():
 
+        partes = nombre.split()
 
-  agregarMensaje(pregunta, "usuario");
+        coincidencias = 0
 
-  responder(pregunta);
+        for palabra in partes:
 
-  input.value = "";
+            if palabra in palabras:
+                coincidencias += 1
 
-}
+        if coincidencias >= 1:
+            return datos
 
+    return None
 
-function preguntar(texto) {
 
-  const input =
-    document.getElementById("pregunta");
+def mostrar_ejercicio(nombre, datos):
 
-  input.value = texto;
+    print("\n" + "=" * 50)
+    print("🏋️ EJERCICIO:", nombre.upper())
+    print("=" * 50)
 
-  enviarPregunta();
+    print("\n💪 Grupo muscular:")
+    print(datos["grupo"])
 
-}
+    print("\n🧠 Músculos trabajados:")
+    print(datos["musculos"])
 
+    print("\n📚 Tipo:")
+    print(datos["tipo"])
 
-function agregarMensaje(texto, tipo) {
+    print("\n📖 Descripción:")
+    print(datos["descripcion"])
 
-  const chat =
-    document.getElementById("chat");
+    print("\n🎯 Técnica:")
+    print(datos["tecnica"])
 
-  const mensaje =
-    document.createElement("div");
+    print("\n⚠️ Errores comunes:")
+    print(datos["errores"])
 
-  mensaje.className =
-    "mensaje " + tipo;
+    print("\n🔄 Variantes:")
+    print(datos["variantes"])
 
+    print("\n📊 Nivel:")
+    print(datos["nivel"])
 
-  if (tipo === "bot") {
 
-    mensaje.innerHTML =
+def buscar_tema(pregunta):
 
-      '<div class="avatar">🤖</div>' +
+    if "calentamiento" in pregunta:
+        return TEMAS["calentamiento"]
 
-      '<div class="burbuja">' +
+    if "cardio" in pregunta:
+        return TEMAS["cardio"]
 
-      texto +
+    if "descanso" in pregunta or "dormir" in pregunta:
+        return TEMAS["descanso"]
 
-      '</div>';
+    if "agua" in pregunta or "hidrata" in pregunta:
+        return TEMAS["hidratacion"]
 
-  }
+    if "comida" in pregunta or "alimentación" in pregunta:
+        return TEMAS["alimentacion"]
 
-  else {
+    if "principiante" in pregunta:
+        return TEMAS["principiantes"]
 
-    mensaje.innerHTML =
+    if "progreso" in pregunta:
+        return TEMAS["progreso"]
 
-      '<div class="burbuja">' +
+    if "seguridad" in pregunta or "lesión" in pregunta:
+        return TEMAS["seguridad"]
 
-      texto +
+    return None
 
-      '</div>';
 
-  }
+def buscar_grupo(pregunta):
 
-
-  chat.appendChild(mensaje);
-
-  window.scrollTo({
-
-    top: document.body.scrollHeight,
-
-    behavior: "smooth"
-
-  });
-
-}
-
-
-function responder(pregunta) {
-
-  const texto =
-    pregunta.toLowerCase();
-
-  let respuesta = "";
-
-
-  if (
-    texto.includes("hola") ||
-    texto.includes("hey") ||
-    texto.includes("buenas")
-  ) {
-
-    respuesta =
-      "¡Hola! 👋 Soy GymBot. " +
-      "Puedo ayudarte con ejercicios, rutinas, " +
-      "calentamiento, hidratación y descanso.";
-
-  }
-
-
-  else if (
-    texto.includes("brazo") ||
-    texto.includes("bíceps") ||
-    texto.includes("biceps")
-  ) {
-
-    respuesta =
-      "💪 Para los brazos puedes aprender " +
-      "sobre ejercicios como el curl de bíceps. " +
-      "Es importante utilizar una técnica correcta " +
-      "y no mover el cuerpo de manera brusca.";
-
-  }
-
-
-  else if (
-    texto.includes("pierna") ||
-    texto.includes("sentadilla") ||
-    texto.includes("zancada")
-  ) {
-
-    respuesta =
-      "🦵 Algunos ejercicios para las piernas " +
-      "son las sentadillas y las zancadas. " +
-      "Mantén una postura cómoda y realiza " +
-      "los movimientos de forma controlada.";
-
-  }
-
-
-  else if (
-    texto.includes("pecho") ||
-    texto.includes("flexion") ||
-    texto.includes("flexión")
-  ) {
-
-    respuesta =
-      "🏋️ Las flexiones son un ejercicio con " +
-      "el peso corporal que trabaja principalmente " +
-      "el pecho, los hombros y los brazos.";
-
-  }
-
-
-  else if (
-    texto.includes("espalda") ||
-    texto.includes("remo")
-  ) {
-
-    respuesta =
-      "🔙 El remo es un movimiento utilizado " +
-      "para trabajar principalmente la espalda. " +
-      "La postura y el control del movimiento " +
-      "son importantes.";
-
-  }
-
-
-  else if (
-    texto.includes("abdomen") ||
-    texto.includes("plancha") ||
-    texto.includes("core")
-  ) {
-
-    respuesta =
-      "🔥 La plancha es un ejercicio isométrico " +
-      "que trabaja la zona media del cuerpo. " +
-      "Procura mantener una postura cómoda " +
-      "sin contener la respiración.";
-
-  }
-
-
-  else if (
-    texto.includes("calentamiento") ||
-    texto.includes("calentar")
-  ) {
-
-    respuesta =
-      "🔥 El calentamiento prepara al cuerpo " +
-      "para la actividad física. Puede incluir " +
-      "movilidad suave y movimientos progresivos " +
-      "durante algunos minutos.";
-
-  }
-
-
-  else if (
-    texto.includes("estiramiento") ||
-    texto.includes("estirar")
-  ) {
-
-    respuesta =
-      "🧘 Los estiramientos suaves pueden formar " +
-      "parte de la vuelta a la calma. Evita " +
-      "hacer movimientos bruscos o llegar al dolor.";
-
-  }
-
-
-  else if (
-    texto.includes("agua") ||
-    texto.includes("hidrat") ||
-    texto.includes("sed")
-  ) {
-
-    respuesta =
-      "💧 La hidratación es importante durante " +
-      "la actividad física. Ten agua disponible " +
-      "y bebe cuando tengas sed, especialmente " +
-      "si hace calor.";
-
-  }
-
-
-  else if (
-    texto.includes("descanso") ||
-    texto.includes("dormir") ||
-    texto.includes("sueño")
-  ) {
-
-    respuesta =
-      "😴 El descanso permite que el cuerpo " +
-      "se recupere después de la actividad física. " +
-      "Dormir bien también forma parte de unos " +
-      "hábitos saludables.";
-
-  }
-
-
-  else if (
-    texto.includes("comida") ||
-    texto.includes("aliment") ||
-    texto.includes("nutric")
-  ) {
-
-    respuesta =
-      "🥗 Una alimentación variada ayuda a obtener " +
-      "los nutrientes y la energía que necesita " +
-      "el cuerpo. No existe un alimento único que " +
-      "por sí solo haga que una persona esté saludable.";
-
-  }
-
-
-  else if (
-    texto.includes("principiante") ||
-    texto.includes("empezar") ||
-    texto.includes("inicio")
-  ) {
-
-    respuesta =
-      "🌱 Si estás empezando, aprende primero " +
-      "la técnica de los movimientos, comienza " +
-      "de forma gradual y permite que tu cuerpo " +
-      "tenga suficiente descanso.";
-
-  }
-
-
-  else if (
-    texto.includes("fuerza") ||
-    texto.includes("fuerte")
-  ) {
-
-    respuesta =
-      "💪 El entrenamiento de fuerza puede ayudar " +
-      "a desarrollar fuerza muscular. Para aprender " +
-      "es importante utilizar una técnica adecuada " +
-      "y progresar poco a poco.";
-
-  }
-
-
-  else if (
-    texto.includes("rutina") ||
-    texto.includes("entrenamiento")
-  ) {
-
-    respuesta =
-      "📋 Puedes revisar la sección de Rutinas " +
-      "de GymBot para conocer ejemplos educativos " +
-      "de cómo organizar una sesión.";
-
-  }
-
-
-  else if (
-    texto.includes("gym") ||
-    texto.includes("gimnasio")
-  ) {
-
-    respuesta =
-      "🏋️ En un gimnasio puedes encontrar " +
-      "máquinas, pesas y diferentes espacios " +
-      "para entrenar. Si eres principiante, " +
-      "pide orientación sobre el uso correcto " +
-      "de los equipos.";
-
-  }
-
-
-  else {
-
-    respuesta =
-      "🤖 Todavía estoy aprendiendo. Puedes " +
-      "preguntarme sobre brazos, piernas, pecho, " +
-      "espalda, abdomen, calentamiento, descanso, " +
-      "hidratación, alimentación o rutinas.";
-
-  }
-
-
-  setTimeout(function() {
-
-    agregarMensaje(respuesta, "bot");
-
-  }, 350);
-
-}
-
-
-function cambiarContador(cantidad) {
-
-  contador += cantidad;
-
-  if (contador < 0) {
-
-    contador = 0;
-
-  }
-
-  document.getElementById("contador").textContent =
-    contador;
-
-}
-
-
-function reiniciarContador() {
-
-  contador = 0;
-
-  document.getElementById("contador").textContent =
-    contador;
-
-}
-
-
-function iniciarTimer() {
-
-  if (intervalo !== null) {
-
-    return;
-
-  }
-
-  intervalo = setInterval(function() {
-
-    if (tiempo > 0) {
-
-      tiempo--;
-
-      actualizarTimer();
-
+    grupos = {
+        "pecho": "Pecho",
+        "espalda": "Espalda",
+        "pierna": "Piernas",
+        "piernas": "Piernas",
+        "hombro": "Hombros",
+        "hombros": "Hombros",
+        "bíceps": "Bíceps",
+        "biceps": "Bíceps",
+        "tríceps": "Tríceps",
+        "triceps": "Tríceps",
+        "abdomen": "Abdomen",
+        "pantorrilla": "Pantorrillas"
     }
 
-    else {
+    for palabra, grupo in grupos.items():
 
-      clearInterval(intervalo);
+        if palabra in pregunta:
 
-      intervalo = null;
+            encontrados = []
 
-      alert("⏰ ¡Terminó el descanso!");
+            for nombre, datos in EJERCICIOS.items():
 
-    }
+                if datos["grupo"] == grupo:
+                    encontrados.append(nombre)
 
-  }, 1000);
+            if encontrados:
 
-}
+                respuesta = f"\n🏋️ Ejercicios para {grupo}:\n\n"
 
+                for ejercicio in encontrados:
+                    respuesta += "• " + ejercicio.title() + "\n"
 
-function pausarTimer() {
+                return respuesta
 
-  if (intervalo !== null) {
+    return None
 
-    clearInterval(intervalo);
 
-    intervalo = null;
+def responder(pregunta):
 
-  }
+    pregunta = pregunta.lower().strip()
 
-}
+    # --------------------------------------------------------
+    # SALUDOS
+    # --------------------------------------------------------
 
+    if any(x in pregunta for x in
+           ["hola", "holaa", "buenas", "hey", "hello"]):
 
-function reiniciarTimer() {
+        return (
+            "¡Hola! 👋 Soy FITBOT.\n"
+            "Tengo información sobre ejercicios, músculos, "
+            "máquinas, cardio y entrenamiento."
+        )
 
-  clearInterval(intervalo);
+    # --------------------------------------------------------
+    # IDENTIDAD
+    # --------------------------------------------------------
 
-  intervalo = null;
+    if "quien eres" in pregunta or "qué eres" in pregunta:
 
-  tiempo = 30;
+        return (
+            "Soy FITBOT 🤖, un chatbot de gimnasio programado "
+            "en Python. Mi información está organizada en una "
+            "base de conocimientos sobre ejercicios y entrenamiento."
+        )
 
-  actualizarTimer();
+    # --------------------------------------------------------
+    # AYUDA
+    # --------------------------------------------------------
 
-}
+    if "ayuda" in pregunta or "que sabes" in pregunta:
 
+        return (
+            "Puedo ayudarte con:\n\n"
+            "🏋️ Ejercicios\n"
+            "💪 Músculos\n"
+            "🦵 Piernas\n"
+            "🫀 Pecho\n"
+            "🔙 Espalda\n"
+            "🏋️ Hombros\n"
+            "💪 Bíceps\n"
+            "💪 Tríceps\n"
+            "🔥 Abdomen\n"
+            "❤️ Cardio\n"
+            "🔥 Calentamiento\n"
+            "😴 Descanso\n"
+            "🥗 Alimentación\n"
+            "💧 Hidratación\n"
+            "📈 Progreso\n"
+            "⚠️ Seguridad"
+        )
 
-function actualizarTimer() {
+    # --------------------------------------------------------
+    # EJERCICIOS
+    # --------------------------------------------------------
 
-  const minutos =
-    Math.floor(tiempo / 60);
+    ejercicio = buscar_ejercicio(pregunta)
 
-  const segundos =
-    tiempo % 60;
+    if ejercicio:
 
-  const textoMinutos =
-    String(minutos).padStart(2, "0");
+        for nombre, datos in EJERCICIOS.items():
 
-  const textoSegundos =
-    String(segundos).padStart(2, "0");
+            if datos == ejercicio:
 
-  document.getElementById("timer").textContent =
-    textoMinutos + ":" + textoSegundos;
+                # Si preguntó específicamente por técnica
+                if "como se hace" in pregunta or \
+                   "cómo se hace" in pregunta or \
+                   "tecnica" in pregunta or \
+                   "técnica" in pregunta:
 
-}
-function verEjercicio(ejercicio) {
+                    return (
+                        f"🎯 Técnica de {nombre.title()}:\n\n"
+                        + datos["tecnica"]
+                    )
 
-  const contenedor =
-    document.getElementById("informacion-ejercicio");
+                # Si preguntó músculos
+                if "musculo" in pregunta or \
+                   "músculo" in pregunta or \
+                   "trabaja" in pregunta:
 
-  let titulo = "";
-  let descripcion = "";
-  let consejos = "";
+                    return (
+                        f"💪 {nombre.title()} trabaja principalmente:\n\n"
+                        + datos["musculos"]
+                    )
 
-  if (ejercicio === "curl") {
+                # Si preguntó errores
+                if "error" in pregunta or \
+                   "mal" in pregunta:
 
-    titulo = "💪 Curl de bíceps";
+                    return (
+                        f"⚠️ Errores comunes en {nombre.title()}:\n\n"
+                        + datos["errores"]
+                    )
 
-    descripcion =
-      "El curl de bíceps es un ejercicio " +
-      "que trabaja principalmente los músculos " +
-      "de la parte frontal del brazo.";
+                mostrar_ejercicio(nombre, datos)
 
-    consejos =
-      "Mantén los codos cerca del cuerpo y " +
-      "realiza el movimiento de forma controlada.";
+                return ""
 
-  }
+    # --------------------------------------------------------
+    # GRUPOS MUSCULARES
+    # --------------------------------------------------------
 
-  else if (ejercicio === "sentadilla") {
+    grupo = buscar_grupo(pregunta)
 
-    titulo = "🦵 Sentadilla";
+    if grupo:
+        return grupo
 
-    descripcion =
-      "La sentadilla es un movimiento que " +
-      "trabaja principalmente las piernas " +
-      "y los glúteos.";
+    # --------------------------------------------------------
+    # TEMAS GENERALES
+    # --------------------------------------------------------
 
-    consejos =
-      "Mantén una postura estable y baja " +
-      "de manera controlada.";
+    tema = buscar_tema(pregunta)
 
-  }
+    if tema:
+        return tema
 
-  else if (ejercicio === "flexiones") {
+    # --------------------------------------------------------
+    # DESPEDIDA
+    # --------------------------------------------------------
 
-    titulo = "🏋️ Flexiones";
+    if any(x in pregunta for x in
+           ["adios", "adiós", "bye", "nos vemos"]):
 
-    descripcion =
-      "Las flexiones utilizan el peso corporal " +
-      "y trabajan principalmente pecho, hombros " +
-      "y brazos.";
+        return "¡Nos vemos! 💪 Gracias por usar FITBOT."
 
-    consejos =
-      "Mantén el cuerpo alineado y realiza " +
-      "el movimiento sin hacerlo bruscamente.";
+    # --------------------------------------------------------
+    # NO ENCONTRADO
+    # --------------------------------------------------------
 
-  }
+    return (
+        "🤖 No encontré exactamente esa información.\n\n"
+        "Prueba con preguntas como:\n"
+        "• ¿Qué músculos trabaja el press banca?\n"
+        "• ¿Cómo se hace una sentadilla?\n"
+        "• ¿Qué ejercicios hay para pecho?\n"
+        "• ¿Qué ejercicios hay para espalda?\n"
+        "• ¿Qué errores tiene el curl de bíceps?\n"
+        "• ¿Qué es el cardio?\n"
+        "• ¿Cómo debo calentar?\n"
+        "• ¿Qué sabes sobre descanso?"
+    )
 
-  else if (ejercicio === "remo") {
 
-    titulo = "🔙 Remo";
+# ============================================================
+#                    PROGRAMA PRINCIPAL
+# ============================================================
 
-    descripcion =
-      "El remo es un movimiento utilizado " +
-      "para trabajar principalmente los músculos " +
-      "de la espalda.";
+print("=" * 60)
+print("                  🤖 FITBOT")
+print("             CHATBOT DE GIMNASIO")
+print("=" * 60)
 
-    consejos =
-      "Mantén la espalda en una posición cómoda " +
-      "y controla el movimiento.";
+print("Hola, soy FITBOT.")
+print("Escribe 'ayuda' para conocer mis temas.")
+print("Escribe 'salir' para terminar.")
 
-  }
+while True:
 
-  else if (ejercicio === "plancha") {
+    pregunta = input("\nTú: ")
 
-    titulo = "🔥 Plancha";
+    if pregunta.lower().strip() == "salir":
 
-    descripcion =
-      "La plancha es un ejercicio isométrico " +
-      "que trabaja la zona media del cuerpo.";
+        print("\nFITBOT: ¡Gracias por usar FITBOT! 💪")
+        print("¡Hasta luego!")
 
-    consejos =
-      "Mantén una posición estable y respira " +
-      "normalmente durante el ejercicio.";
+        break
 
-  }
+    respuesta = responder(pregunta)
 
-  else if (ejercicio === "zancadas") {
+    if respuesta:
+        print("\nFITBOT:", respuesta)
+        class Memoria:
+    def __init__(self):
+        self.nombre = None
+        self.nivel = None
+        self.ultimo_ejercicio = None
+        self.ultimo_grupo = None
+        self.historial = []
 
-    titulo = "🚶 Zancadas";
+    def guardar_mensaje(self, pregunta, respuesta):
+        self.historial.append({
+            "pregunta": pregunta,
+            "respuesta": respuesta
+        })
 
-    descripcion =
-      "Las zancadas son un movimiento que " +
-      "trabaja principalmente las piernas.";
+        # Conservamos solo los últimos 20 mensajes
+        if len(self.historial) > 20:
+            self.historial.pop(0)
 
-    consejos =
-      "Realiza pasos controlados y mantén " +
-      "una postura estable.";
+    def guardar_ejercicio(self, ejercicio):
+        self.ultimo_ejercicio = ejercicio
 
-  }
+    def guardar_grupo(self, grupo):
+        self.ultimo_grupo = grupo
 
+    def guardar_nombre(self, nombre):
+        self.nombre = nombre
 
-  contenedor.innerHTML =
+    def guardar_nivel(self, nivel):
+        self.nivel = nivel
 
-    '<div class="tarjeta">' +
+    def contexto(self):
+        datos = []
 
-      '<h3>' + titulo + '</h3>' +
+        if self.nombre:
+            datos.append(f"Nombre: {self.nombre}")
 
-      '<p>' +
-      descripcion +
-      '</p>' +
+        if self.nivel:
+            datos.append(f"Nivel: {self.nivel}")
 
-      '<div class="nota">' +
-      '💡 Consejo: ' +
-      consejos +
-      '</div>' +
+        if self.ultimo_ejercicio:
+            datos.append(f"Último ejercicio consultado: {self.ultimo_ejercicio}")
 
-      '<button ' +
-      'class="boton-card" ' +
-      'onclick="cerrarInformacion()">' +
-      'Cerrar' +
-      '</button>' +
+        if self.ultimo_grupo:
+            datos.append(f"Último grupo muscular: {self.ultimo_grupo}")
 
-    '</div>';
+        return datos
 
-}
+    def mostrar_memoria(self):
+        print("\n--- MEMORIA DE FITBOT ---")
 
+        if self.nombre:
+            print(f"Nombre: {self.nombre}")
+        else:
+            print("Nombre: no registrado")
 
-function cerrarInformacion() {
+        if self.nivel:
+            print(f"Nivel: {self.nivel}")
+        else:
+            print("Nivel: no registrado")
 
-  document.getElementById(
-    "informacion-ejercicio"
-  ).innerHTML = "";
+        if self.ultimo_ejercicio:
+            print(f"Último ejercicio: {self.ultimo_ejercicio}")
 
-}
+        if self.ultimo_grupo:
+            print(f"Último grupo muscular: {self.ultimo_grupo}")
 
-
-function mostrarAyuda() {
-
-  agregarMensaje(
-
-    "🤖 Puedes preguntarme cosas como:<br><br>" +
-
-    "• ¿Qué ejercicios hay para brazos?<br>" +
-
-    "• ¿Qué ejercicios trabajan las piernas?<br>" +
-
-    "• ¿Qué es el calentamiento?<br>" +
-
-    "• ¿Por qué es importante descansar?<br>" +
-
-    "• ¿Qué es la hidratación?<br>" +
-
-    "• ¿Qué es una rutina?",
-
-    "bot"
-
-  );
-
-}
-
-
-function limpiarChat() {
-
-  const chat =
-    document.getElementById("chat");
-
-  chat.innerHTML =
-
-    '<div class="mensaje bot">' +
-
-      '<div class="avatar">🤖</div>' +
-
-      '<div class="burbuja">' +
-
-        '¡Chat limpio! 👋<br><br>' +
-
-        'Soy GymBot. ¿Qué quieres aprender?'
-
-      + '</div>' +
-
-    '</div>';
-
-}
-
-
-function mensajeBienvenida() {
-
-  setTimeout(function() {
-
-    agregarMensaje(
-
-      "💡 También puedes utilizar " +
-      "las secciones de Ejercicios, Rutinas " +
-      "y Herramientas del menú.",
-
-      "bot"
-
-    );
-
-  }, 700);
-
-}
-
-
-mensajeBienvenida();
-
-</script>  
-<!-- PARTE 4/4 -->
-
-<script>
-
-function irAlChatConPregunta(texto) {
-
-  mostrarPantalla("chat");
-
-  setTimeout(function() {
-
-    preguntar(texto);
-
-  }, 100);
-
-}
-
-
-document.addEventListener("keydown", function(evento) {
-
-  if (
-    evento.key === "Escape" &&
-    document.activeElement &&
-    document.activeElement.id === "pregunta"
-  ) {
-
-    document.getElementById("pregunta").value = "";
-
-  }
-
-});
-
-
-function consejoAleatorio() {
-
-  const consejos = [
-
-    "💡 Recuerda aprender primero la técnica de cada movimiento.",
-
-    "💧 Mantén agua disponible durante la actividad física.",
-
-    "😴 El descanso también forma parte de unos hábitos saludables.",
-
-    "🔥 Un calentamiento suave puede preparar al cuerpo para moverse.",
-
-    "📚 GymBot es una herramienta educativa sobre ejercicio y hábitos saludables.",
-
-    "🧘 Realiza los movimientos de forma controlada y evita el dolor.",
-
-    "🌱 Si estás empezando, avanza poco a poco y aprende la técnica."
-
-  ];
-
-  const numero =
-    Math.floor(Math.random() * consejos.length);
-
-  agregarMensaje(
-
-    consejos[numero],
-
-    "bot"
-
-  );
-
-}
-
-
-function agregarConsejo() {
-
-  const tarjeta =
-    document.createElement("div");
-
-  tarjeta.className = "tarjeta";
-
-  tarjeta.innerHTML =
-
-    "<h3>💡 Consejo de GymBot</h3>" +
-
-    "<p>Presiona el botón para recibir " +
-    "un consejo educativo.</p>" +
-
-    "<button class='boton-card' " +
-    "onclick='consejoAleatorio()'>" +
-
-    "Mostrar consejo" +
-
-    "</button>";
-
-  document
-    .getElementById("pantalla-herramientas")
-    .appendChild(tarjeta);
-
-}
-
-
-function detectarEnter() {
-
-  const input =
-    document.getElementById("pregunta");
-
-  input.addEventListener("keypress", function(evento) {
-
-    if (evento.key === "Enter") {
-
-      evento.preventDefault();
-
-      enviarPregunta();
-
-    }
-
-  });
-
-}
-
-
-detectarEnter();
-
-
-function actualizarTitulo() {
-
-  const hora =
-    new Date().getHours();
-
-  let saludo = "";
-
-  if (hora < 12) {
-
-    saludo = "☀️ Buenos días";
-
-  }
-
-  else if (hora < 19) {
-
-    saludo = "🌤️ Buenas tardes";
-
-  }
-
-  else {
-
-    saludo = "🌙 Buenas noches";
-
-  }
-
-  console.log(
-
-    saludo +
-    " - GymBot está listo."
-
-  );
-
-}
-
-
-actualizarTitulo();
-
-</script>
-
-</body>
-</html>  
+        print(f"Mensajes guardados: {len(self.historial)}")
+        print("-------------------------")
