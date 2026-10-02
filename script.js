@@ -1,140 +1,144 @@
 const chat = document.getElementById("chat");
 const entrada = document.getElementById("entrada");
 
+/* =========================
+   BASE DE EJERCICIOS
+========================= */
+
 const ejercicios = {
     "press banca": {
         grupo: "Pecho",
-        musculos: "Trabaja principalmente el pecho, además de tríceps y hombros.",
-        tecnica: "Acuéstate en el banco, coloca los pies firmes en el suelo, baja la barra de forma controlada hacia el pecho y empuja hacia arriba sin perder el control.",
-        errores: "Evita rebotar la barra, mover demasiado los hombros o utilizar un peso que no puedas controlar.",
-        variantes: "Puedes hacerlo con mancuernas, en máquina o con diferentes inclinaciones."
+        musculos: "Pecho, tríceps y parte frontal de los hombros.",
+        tecnica: "Acuéstate en el banco, mantén los pies firmes y baja la barra de manera controlada hacia el pecho. Después empuja hacia arriba manteniendo el control.",
+        errores: "Rebotar la barra, perder el control del movimiento o utilizar una carga que no puedas manejar correctamente.",
+        variantes: "Press con mancuernas, press inclinado y press en máquina."
     },
 
     "press inclinado": {
         grupo: "Pecho",
-        musculos: "Trabaja principalmente el pecho, con mayor participación de la zona superior, además de hombros y tríceps.",
-        tecnica: "Usa un banco inclinado, mantén los pies firmes y mueve las pesas de forma controlada.",
-        errores: "Evita arquear demasiado la espalda o bajar las pesas sin control.",
-        variantes: "Puedes hacerlo con mancuernas, barra o máquina."
+        musculos: "Principalmente la parte superior del pecho, además de hombros y tríceps.",
+        tecnica: "Utiliza un banco inclinado y mueve las pesas de forma controlada, manteniendo los pies firmes.",
+        errores: "Utilizar demasiado peso, perder el control o arquear demasiado la espalda.",
+        variantes: "Mancuernas, barra o máquina."
     },
 
     "flexiones": {
         grupo: "Pecho",
-        musculos: "Trabajan pecho, tríceps y hombros, además de varios músculos que ayudan a mantener el cuerpo estable.",
+        musculos: "Pecho, tríceps, hombros y músculos del abdomen que ayudan a estabilizar el cuerpo.",
         tecnica: "Coloca las manos aproximadamente al ancho de los hombros, mantén el cuerpo alineado y baja de forma controlada.",
-        errores: "Evita dejar caer la cadera o mover la cabeza en lugar de mantener el cuerpo estable.",
-        variantes: "Puedes hacerlas apoyando las rodillas o usando diferentes posiciones de las manos."
+        errores: "Dejar caer la cadera, levantar demasiado la cadera o hacer el movimiento demasiado rápido.",
+        variantes: "Flexiones con rodillas apoyadas, normales o con diferentes posiciones de manos."
     },
 
     "jalon al pecho": {
         grupo: "Espalda",
-        musculos: "Trabaja principalmente los dorsales y también participa el bíceps.",
+        musculos: "Principalmente dorsales y también bíceps.",
         tecnica: "Siéntate correctamente, sujeta la barra y llévala hacia la parte superior del pecho manteniendo el movimiento controlado.",
-        errores: "No balancees el cuerpo ni tires de la barra detrás del cuello.",
-        variantes: "Puedes variar el agarre y utilizar diferentes accesorios."
+        errores: "Balancear demasiado el cuerpo o llevar la barra detrás del cuello.",
+        variantes: "Diferentes agarres y accesorios."
     },
 
     "remo": {
         grupo: "Espalda",
-        musculos: "Trabaja diferentes músculos de la espalda y también involucra los brazos.",
-        tecnica: "Mantén el torso estable y lleva el agarre hacia tu cuerpo controlando tanto la subida como la bajada.",
-        errores: "Evita encorvar demasiado la espalda o utilizar impulso.",
-        variantes: "Puedes hacerlo con máquina, polea, barra o mancuernas."
+        musculos: "Trabaja diferentes músculos de la espalda y también los brazos.",
+        tecnica: "Mantén el torso estable y lleva el agarre hacia tu cuerpo de manera controlada.",
+        errores: "Encoger demasiado los hombros, encorvar la espalda o utilizar impulso.",
+        variantes: "Remo con máquina, polea, barra o mancuernas."
     },
 
     "dominadas": {
         grupo: "Espalda",
-        musculos: "Trabajan principalmente la espalda y también los bíceps y músculos estabilizadores.",
-        tecnica: "Sujeta la barra, mantén el cuerpo controlado y eleva el cuerpo sin balancearte demasiado.",
-        errores: "Evita hacer movimientos bruscos o utilizar impulso excesivo.",
-        variantes: "Puedes utilizar una máquina asistida o una banda de resistencia."
+        musculos: "Espalda, bíceps y músculos estabilizadores.",
+        tecnica: "Sujeta la barra y eleva el cuerpo manteniendo el movimiento controlado.",
+        errores: "Balancearse excesivamente o hacer movimientos bruscos.",
+        variantes: "Dominadas asistidas o con diferentes agarres."
     },
 
     "sentadilla": {
         grupo: "Piernas",
-        musculos: "Trabaja principalmente piernas y glúteos, además de músculos que ayudan a estabilizar el cuerpo.",
-        tecnica: "Coloca los pies en una posición cómoda, flexiona las rodillas y caderas manteniendo el control y vuelve a subir.",
-        errores: "Evita perder el control de las rodillas o bajar de una manera que te cause dolor.",
-        variantes: "Puedes hacerla con tu propio peso, con mancuerna, barra o en máquina."
+        musculos: "Piernas y glúteos, además de músculos estabilizadores.",
+        tecnica: "Coloca los pies en una posición cómoda, flexiona caderas y rodillas de manera controlada y vuelve a subir.",
+        errores: "Perder el control del movimiento o utilizar una carga que dificulte mantener una buena técnica.",
+        variantes: "Sentadilla con peso corporal, mancuerna, barra o máquina."
     },
 
     "prensa": {
         grupo: "Piernas",
-        musculos: "Trabaja principalmente los músculos de las piernas.",
-        tecnica: "Coloca correctamente los pies en la plataforma, baja de forma controlada y empuja sin bloquear bruscamente las rodillas.",
-        errores: "No despegues la cadera del respaldo ni uses un peso que no puedas controlar.",
-        variantes: "La posición de los pies puede modificarse según la máquina y el ejercicio."
+        musculos: "Principalmente los músculos de las piernas.",
+        tecnica: "Coloca correctamente los pies, baja la plataforma de manera controlada y empuja sin bloquear bruscamente las rodillas.",
+        errores: "Despegar la cadera del respaldo o utilizar una carga que no puedas controlar.",
+        variantes: "Puedes modificar la posición de los pies según la máquina."
     },
 
     "zancadas": {
         grupo: "Piernas",
-        musculos: "Trabajan piernas y glúteos, además de músculos que ayudan al equilibrio.",
-        tecnica: "Da un paso hacia adelante, flexiona ambas piernas de manera controlada y vuelve a la posición inicial.",
-        errores: "Evita perder el equilibrio o hacer el movimiento demasiado rápido.",
-        variantes: "Puedes hacerlas caminando, en el mismo lugar o con mancuernas."
+        musculos: "Piernas y glúteos, además de músculos que ayudan al equilibrio.",
+        tecnica: "Da un paso hacia adelante, flexiona ambas piernas de forma controlada y regresa a la posición inicial.",
+        errores: "Perder el equilibrio o hacer el movimiento demasiado rápido.",
+        variantes: "Zancadas caminando, estáticas o con mancuernas."
     },
 
     "curl biceps": {
         grupo: "Bíceps",
-        musculos: "Trabaja principalmente los bíceps.",
-        tecnica: "Mantén los codos cerca del cuerpo y flexiona los brazos de forma controlada.",
-        errores: "Evita balancear el torso o usar impulso para levantar el peso.",
-        variantes: "Puedes hacerlo con barra, mancuernas o máquina."
+        musculos: "Principalmente los bíceps.",
+        tecnica: "Mantén los codos cerca del cuerpo y flexiona los brazos de manera controlada.",
+        errores: "Balancear el cuerpo o utilizar impulso.",
+        variantes: "Barra, mancuernas o máquina."
     },
 
     "curl martillo": {
         grupo: "Bíceps",
-        musculos: "Trabaja los bíceps y otros músculos del brazo y antebrazo.",
-        tecnica: "Mantén las palmas enfrentadas y flexiona los brazos sin mover demasiado los codos.",
-        errores: "Evita balancearte o acelerar demasiado el movimiento.",
-        variantes: "Puedes hacerlo de pie, sentado o alternando los brazos."
+        musculos: "Bíceps y músculos del antebrazo.",
+        tecnica: "Mantén las palmas enfrentadas y flexiona los brazos manteniendo los codos estables.",
+        errores: "Balancearse o acelerar demasiado el movimiento.",
+        variantes: "Alternado, simultáneo o sentado."
     },
 
     "triceps polea": {
         grupo: "Tríceps",
-        musculos: "Trabaja principalmente los tríceps.",
-        tecnica: "Mantén los codos cerca del cuerpo y empuja el agarre hacia abajo de forma controlada.",
-        errores: "Evita mover los codos hacia adelante y atrás durante cada repetición.",
-        variantes: "Puedes utilizar diferentes agarres y accesorios."
+        musculos: "Principalmente los tríceps.",
+        tecnica: "Mantén los codos cerca del cuerpo y empuja el agarre hacia abajo de manera controlada.",
+        errores: "Mover demasiado los codos o utilizar impulso.",
+        variantes: "Cuerda, barra u otros agarres."
     },
 
     "press hombros": {
         grupo: "Hombros",
-        musculos: "Trabaja principalmente los hombros y también participan los tríceps.",
-        tecnica: "Mantén una postura estable y empuja las pesas hacia arriba de manera controlada.",
-        errores: "Evita arquear demasiado la espalda o realizar movimientos bruscos.",
-        variantes: "Puedes hacerlo con mancuernas, barra o máquina."
+        musculos: "Hombros y tríceps.",
+        tecnica: "Mantén una postura estable y empuja las pesas hacia arriba de forma controlada.",
+        errores: "Arquear demasiado la espalda o hacer movimientos bruscos.",
+        variantes: "Mancuernas, barra o máquina."
     },
 
     "elevaciones laterales": {
         grupo: "Hombros",
-        musculos: "Trabajan principalmente la parte lateral de los hombros.",
-        tecnica: "Levanta los brazos hacia los lados de forma controlada y vuelve lentamente a la posición inicial.",
-        errores: "Evita balancear el cuerpo o utilizar demasiado peso.",
-        variantes: "Puedes hacerlas con mancuernas, polea o máquina."
+        musculos: "Principalmente la parte lateral de los hombros.",
+        tecnica: "Eleva los brazos hacia los lados de forma controlada y regresa lentamente.",
+        errores: "Balancear el cuerpo o utilizar demasiado peso.",
+        variantes: "Mancuernas, polea o máquina."
     },
 
     "abdominales": {
         grupo: "Core",
-        musculos: "Trabajan principalmente los músculos abdominales.",
+        musculos: "Principalmente los músculos abdominales.",
         tecnica: "Realiza el movimiento de manera controlada y evita tirar del cuello.",
-        errores: "No hagas el ejercicio demasiado rápido ni fuerces el cuello.",
-        variantes: "Puedes utilizar diferentes ejercicios para trabajar el abdomen."
+        errores: "Hacer el ejercicio demasiado rápido o forzar el cuello.",
+        variantes: "Existen muchas variantes según el nivel y objetivo."
     },
 
     "plancha": {
         grupo: "Core",
-        musculos: "Trabaja el abdomen y varios músculos que ayudan a estabilizar el cuerpo.",
+        musculos: "Abdomen y músculos estabilizadores.",
         tecnica: "Apoya los antebrazos y pies, mantén el cuerpo alineado y respira normalmente.",
-        errores: "Evita dejar caer demasiado la cadera o elevarla demasiado.",
-        variantes: "Puedes hacerla con rodillas apoyadas o utilizar variantes laterales."
+        errores: "Dejar caer demasiado la cadera o elevarla demasiado.",
+        variantes: "Plancha con rodillas apoyadas y plancha lateral."
     }
 };
 
 
-// -----------------------------
-// FUNCIONES BÁSICAS
-// -----------------------------
+/* =========================
+   FUNCIONES DEL CHAT
+========================= */
 
 function normalizar(texto) {
     return texto
@@ -144,68 +148,157 @@ function normalizar(texto) {
         .trim();
 }
 
-
 function agregarMensaje(texto, tipo) {
     const mensaje = document.createElement("div");
 
-    mensaje.className = `mensaje ${tipo}`;
-
+    mensaje.className = "mensaje " + tipo;
     mensaje.innerHTML = texto.replace(/\n/g, "<br>");
 
     chat.appendChild(mensaje);
-
     chat.scrollTop = chat.scrollHeight;
 }
-
-
-// -----------------------------
-// RESPUESTAS ALEATORIAS
-// -----------------------------
-
-const respuestasGenerales = [
-    "Claro 💪 Cuéntame qué parte del entrenamiento quieres trabajar y te explico.",
-    "¡Sí! 🏋️ Puedo ayudarte con ejercicios, técnica, calentamiento y entrenamiento.",
-    "Vamos paso a paso 💪 Dime qué ejercicio o grupo muscular te interesa.",
-    "¡Perfecto! 🤖 Pregúntame sobre algún ejercicio y te explico cómo realizarlo.",
-    "Estoy listo 😎 Puedes preguntarme por ejercicios, músculos, técnica o descanso."
-];
-
-
-const respuestasNoEntiendo = [
-    "🤔 No entendí completamente la pregunta. Puedes decirme el ejercicio o grupo muscular que te interesa.",
-    "💪 Creo que necesito un poquito más de información. Prueba con algo como: “rutina de pecho” o “cómo se hace una sentadilla”.",
-    "🧐 Esa pregunta todavía no la reconozco. Puedes preguntarme sobre ejercicios, músculos, técnica, calentamiento o cardio.",
-    "🤖 Todavía estoy aprendiendo. Intenta preguntarme de otra forma y buscaré una respuesta.",
-    "💡 Puedes probar con: “¿qué ejercicios hay para espalda?”, “¿cómo hago una sentadilla?” o “¿qué hago para calentar?”"
-];
-
 
 function respuestaAleatoria(lista) {
     return lista[Math.floor(Math.random() * lista.length)];
 }
 
 
-// -----------------------------
-// BUSCAR EJERCICIO
-// -----------------------------
+/* =========================
+   RESPUESTAS VARIADAS
+========================= */
+
+const saludos = [
+    "¡Hola! 👋 Soy GYMBOT. ¿Qué quieres entrenar hoy?",
+    "¡Hey! 💪 ¿Qué necesitas saber sobre entrenamiento?",
+    "¡Hola! 😎 Estoy listo para ayudarte con tu entrenamiento.",
+    "¡Qué tal! 🏋️ Puedes preguntarme sobre ejercicios, rutinas o técnica."
+];
+
+const desconocido = [
+    "🤔 No reconocí completamente esa pregunta. Prueba decirme qué músculo o ejercicio te interesa.",
+    "💡 Puedo ayudarte con rutinas, ejercicios, técnica, calentamiento, cardio, descanso y más.",
+    "🧐 No tengo una respuesta específica para eso todavía. Intenta escribirlo de otra manera.",
+    "🤖 Todavía estoy aprendiendo. Puedes preguntarme directamente por un ejercicio o grupo muscular.",
+    "💪 Prueba con algo como: “dame una rutina de pecho” o “¿qué trabaja la sentadilla?”"
+];
+
+
+/* =========================
+   RUTINAS
+========================= */
+
+function crearRutina(grupo) {
+
+    const rutinas = {
+
+        pecho: `💪 RUTINA DE PECHO
+
+🔥 Preparación
+• Calentamiento general
+• Movilidad de hombros
+
+🏋️ Entrenamiento
+1. Press banca
+2. Press inclinado
+3. Flexiones
+
+🎯 En cada ejercicio:
+• Prioriza la técnica
+• Controla el movimiento
+• Usa una carga que puedas manejar
+
+Si eres principiante, empieza aprendiendo correctamente los movimientos.`,
+
+        espalda: `🏋️ RUTINA DE ESPALDA
+
+🔥 Preparación
+• Calentamiento
+• Movilidad de hombros
+
+💪 Entrenamiento
+1. Jalón al pecho
+2. Remo
+3. Dominadas o dominadas asistidas
+
+🎯 Consejo:
+Concéntrate en mover la espalda y evita utilizar demasiado impulso.`,
+
+        piernas: `🦵 RUTINA DE PIERNAS
+
+🔥 Preparación
+• Calentamiento
+• Movilidad de cadera y piernas
+
+🏋️ Entrenamiento
+1. Sentadilla
+2. Prensa
+3. Zancadas
+
+🎯 Consejo:
+Mantén el control durante todo el movimiento y aprende primero la técnica.`,
+
+        hombros: `🔥 RUTINA DE HOMBROS
+
+🏋️ Entrenamiento
+1. Press de hombros
+2. Elevaciones laterales
+
+🎯 Consejo:
+No necesitas utilizar mucho peso para aprender correctamente los ejercicios.`,
+
+        brazos: `💪 RUTINA DE BRAZOS
+
+Bíceps:
+• Curl de bíceps
+• Curl martillo
+
+Tríceps:
+• Tríceps en polea
+
+🎯 Consejo:
+Controla la subida y la bajada y evita utilizar impulso.`
+    };
+
+    return rutinas[grupo];
+}
+
+
+/* =========================
+   BUSCAR EJERCICIO
+========================= */
 
 function buscarEjercicio(texto) {
 
-    for (const nombre in ejercicios) {
+    const equivalencias = {
+        "press de banca": "press banca",
+        "banca": "press banca",
+        "press inclinado": "press inclinado",
+        "flexiones": "flexiones",
+        "lagartijas": "flexiones",
+        "jalon": "jalon al pecho",
+        "jalon al pecho": "jalon al pecho",
+        "remo": "remo",
+        "dominadas": "dominadas",
+        "sentadilla": "sentadilla",
+        "sentadillas": "sentadilla",
+        "prensa": "prensa",
+        "zancadas": "zancadas",
+        "curl de biceps": "curl biceps",
+        "curl biceps": "curl biceps",
+        "curl martillo": "curl martillo",
+        "triceps": "triceps polea",
+        "triceps polea": "triceps polea",
+        "press de hombros": "press hombros",
+        "press hombros": "press hombros",
+        "elevaciones laterales": "elevaciones laterales",
+        "abdominales": "abdominales",
+        "plancha": "plancha"
+    };
 
-        const palabras = nombre.split(" ");
+    for (const palabra in equivalencias) {
 
-        let coincide = true;
-
-        for (const palabra of palabras) {
-            if (!texto.includes(palabra)) {
-                coincide = false;
-                break;
-            }
-        }
-
-        if (coincide) {
-            return ejercicios[nombre];
+        if (texto.includes(palabra)) {
+            return ejercicios[equivalencias[palabra]];
         }
     }
 
@@ -213,69 +306,16 @@ function buscarEjercicio(texto) {
 }
 
 
-// -----------------------------
-// RUTINAS
-// -----------------------------
-
-function rutinaPorGrupo(grupo) {
-
-    if (grupo === "pecho") {
-        return `💪 Rutina básica de pecho:
-
-1. Calentamiento general.
-2. Press banca.
-3. Press inclinado.
-4. Flexiones.
-
-Haz los ejercicios con una técnica controlada y utiliza una carga que puedas manejar correctamente.`;
-    }
-
-    if (grupo === "espalda") {
-        return `🏋️ Rutina básica de espalda:
-
-1. Calentamiento.
-2. Jalón al pecho.
-3. Remo.
-4. Dominadas o una variante asistida.
-
-Concéntrate en controlar el movimiento y mantener una postura estable.`;
-    }
-
-    if (grupo === "piernas") {
-        return `🦵 Rutina básica de piernas:
-
-1. Calentamiento.
-2. Sentadilla.
-3. Prensa.
-4. Zancadas.
-
-Empieza con movimientos que puedas realizar con buena técnica.`;
-    }
-
-    if (grupo === "hombros") {
-        return `🔥 Rutina básica de hombros:
-
-1. Calentamiento.
-2. Press de hombros.
-3. Elevaciones laterales.
-
-No necesitas utilizar mucho peso para aprender correctamente los movimientos.`;
-    }
-
-    return null;
-}
-
-
-// -----------------------------
-// RESPONDER
-// -----------------------------
+/* =========================
+   RESPONDER
+========================= */
 
 function responder(preguntaOriginal) {
 
     const texto = normalizar(preguntaOriginal);
 
 
-    // SALUDOS
+    /* SALUDOS */
 
     if (
         texto === "hola" ||
@@ -285,100 +325,100 @@ function responder(preguntaOriginal) {
         texto.includes("buenas tardes") ||
         texto.includes("buenas noches")
     ) {
-        return respuestaAleatoria([
-            "¡Hola! 👋 Soy GYMBOT. ¿Qué quieres entrenar hoy?",
-            "¡Hey! 💪 ¿En qué ejercicio necesitas ayuda?",
-            "¡Hola! 😎 Estoy listo para hablar de entrenamiento.",
-            "¡Qué tal! 🏋️ ¿Quieres una rutina o información sobre algún ejercicio?"
-        ]);
+        return respuestaAleatoria(saludos);
     }
 
 
-    // IDENTIDAD
+    /* IDENTIDAD */
 
     if (
         texto.includes("quien eres") ||
         texto.includes("que eres") ||
         texto.includes("como te llamas")
     ) {
-        return "🤖 Soy GYMBOT, un chatbot escolar creado para ofrecer información básica sobre ejercicio, entrenamiento y hábitos saludables.";
+        return "🤖 Soy GYMBOT, un chatbot escolar diseñado para proporcionar información sobre ejercicio, entrenamiento y hábitos saludables.";
     }
 
 
-    // AYUDA
+    /* AYUDA */
 
     if (
         texto.includes("ayuda") ||
         texto.includes("que puedes hacer") ||
-        texto.includes("que sabes hacer")
+        texto.includes("que sabes")
     ) {
-        return `💪 Puedo ayudarte con:
+        return `🤖 Puedo ayudarte con muchas cosas:
 
-• Ejercicios
-• Músculos
-• Técnica
-• Errores comunes
-• Variantes
-• Calentamiento
-• Cardio
-• Descanso
-• Rutinas básicas
+💪 Ejercicios
+🏋️ Rutinas
+🦵 Grupos musculares
+🔥 Calentamiento
+🏃 Cardio
+⏱️ Descanso
+📈 Progreso
+⚠️ Errores de técnica
+🔄 Variantes
 
-Puedes preguntarme directamente lo que necesites.`;
+También puedes escribir una pregunta normal y trataré de identificar lo que necesitas.`;
     }
-    // PREGUNTAS SOBRE QUÉ HACER PARA ENTRENAR
-
-if (
-    texto.includes("que debo hacer para entrenar") ||
-    texto.includes("que debo de hacer para entrenar") ||
-    texto.includes("que tengo que hacer para entrenar") ||
-    texto.includes("como debo entrenar") ||
-    texto.includes("como puedo entrenar") ||
-    texto.includes("que hago para entrenar")
-) {
-    return `💪 Si estás empezando, puedes organizar tu entrenamiento así:
-
-🔥 1. Calentamiento
-🏋️ 2. Ejercicios principales
-⏱️ 3. Descansos entre series
-🧘 4. Regresar a la calma al terminar
-
-Puedes decirme qué quieres entrenar, por ejemplo: pecho, espalda, piernas u hombros, y te mostraré una rutina básica.`;
-}
 
 
-    // RUTINA GENERAL
+    /* QUÉ HACER PARA ENTRENAR */
+
+    if (
+        texto.includes("que debo hacer") ||
+        texto.includes("que debo de hacer") ||
+        texto.includes("que tengo que hacer") ||
+        texto.includes("que hago para entrenar") ||
+        texto.includes("como debo entrenar") ||
+        texto.includes("como puedo entrenar") ||
+        texto.includes("por donde empiezo")
+    ) {
+        return `🏋️ Para organizar un entrenamiento puedes comenzar así:
+
+1️⃣ Decide qué grupo muscular quieres trabajar.
+2️⃣ Haz un calentamiento.
+3️⃣ Elige algunos ejercicios adecuados.
+4️⃣ Concéntrate en la técnica.
+5️⃣ Descansa entre ejercicios.
+6️⃣ Termina cuando notes que tu técnica empieza a empeorar.
+
+Si me dices qué quieres entrenar, puedo darte una rutina básica específica.`;
+    }
+
+
+    /* RUTINA HOY */
 
     if (
         texto.includes("rutina") &&
         (
             texto.includes("hoy") ||
-            texto.includes("puedo hacer") ||
-            texto.includes("recomiendas") ||
-            texto.includes("que hago")
+            texto.includes("ahora") ||
+            texto.includes("entrenar")
         )
     ) {
-        return `🏋️ Puedes organizar tu entrenamiento según el grupo muscular que quieras trabajar.
+        return `💪 Podemos organizar tu entrenamiento según lo que quieras trabajar.
 
-Por ejemplo:
+Opciones:
 
 💪 Pecho
 🏋️ Espalda
 🦵 Piernas
 🔥 Hombros
+💪 Brazos
 
-Si me dices cuál quieres entrenar, te puedo mostrar una rutina básica.`;
+Dime cuál quieres trabajar y te preparo una rutina.`;
     }
 
 
-    // RUTINAS POR GRUPO
+    /* RUTINAS ESPECÍFICAS */
 
     if (
         texto.includes("rutina de pecho") ||
         texto.includes("rutina para pecho") ||
         texto.includes("entrenar pecho")
     ) {
-        return rutinaPorGrupo("pecho");
+        return crearRutina("pecho");
     }
 
     if (
@@ -386,7 +426,7 @@ Si me dices cuál quieres entrenar, te puedo mostrar una rutina básica.`;
         texto.includes("rutina para espalda") ||
         texto.includes("entrenar espalda")
     ) {
-        return rutinaPorGrupo("espalda");
+        return crearRutina("espalda");
     }
 
     if (
@@ -394,7 +434,7 @@ Si me dices cuál quieres entrenar, te puedo mostrar una rutina básica.`;
         texto.includes("rutina para piernas") ||
         texto.includes("entrenar piernas")
     ) {
-        return rutinaPorGrupo("piernas");
+        return crearRutina("piernas");
     }
 
     if (
@@ -402,59 +442,55 @@ Si me dices cuál quieres entrenar, te puedo mostrar una rutina básica.`;
         texto.includes("rutina para hombros") ||
         texto.includes("entrenar hombros")
     ) {
-        return rutinaPorGrupo("hombros");
+        return crearRutina("hombros");
+    }
+
+    if (
+        texto.includes("rutina de brazos") ||
+        texto.includes("rutina para brazos") ||
+        texto.includes("entrenar brazos")
+    ) {
+        return crearRutina("brazos");
     }
 
 
-    // PRINCIPIANTE
+    /* PRINCIPIANTE */
 
     if (
         texto.includes("principiante") ||
         texto.includes("soy nuevo") ||
-        texto.includes("estoy empezando")
+        texto.includes("estoy empezando") ||
+        texto.includes("nunca he entrenado")
     ) {
-        return `🌱 Si estás empezando, enfócate primero en aprender la técnica.
+        return `🌱 Si estás comenzando, lo principal es aprender los movimientos.
 
-Una sesión sencilla puede incluir:
+Puedes empezar con:
 
-• Calentamiento
-• Algunos ejercicios básicos
-• Descansos adecuados
-• Movimientos controlados
+🔥 Calentamiento
+🏋️ Ejercicios básicos
+⏱️ Descansos adecuados
+🎯 Técnica controlada
 
-No necesitas empezar con cargas pesadas.`;
+No necesitas comenzar con cargas pesadas. Primero aprende a realizar correctamente los ejercicios.`;
     }
 
 
-    // CALENTAMIENTO
+    /* SERIES Y REPETICIONES */
 
     if (
-        texto.includes("calentamiento") ||
-        texto.includes("calentar")
+        texto.includes("series") ||
+        texto.includes("repeticiones") ||
+        texto.includes("reps")
     ) {
-        return `🔥 El calentamiento prepara tu cuerpo para la actividad.
+        return `🔢 Las series y repeticiones dependen del ejercicio, tu experiencia y el objetivo del entrenamiento.
 
-Puedes comenzar con unos minutos de movimiento ligero y después realizar movimientos relacionados con los ejercicios que vas a hacer.
+Si estás comenzando, es mejor enfocarte en aprender la técnica y utilizar una cantidad de trabajo que puedas realizar con buena forma.
 
-La idea es prepararte, no agotarte antes de entrenar.`;
+La calidad del movimiento es más importante que hacer muchas repeticiones rápidamente.`;
     }
 
 
-    // CARDIO
-
-    if (
-        texto.includes("cardio") ||
-        texto.includes("correr") ||
-        texto.includes("caminadora") ||
-        texto.includes("bicicleta")
-    ) {
-        return `🏃 El cardio incluye actividades como caminar, correr, bicicleta o utilizar una máquina elíptica.
-
-La intensidad puede ajustarse según tu condición y experiencia. Empieza de manera progresiva.`;
-    }
-
-
-    // DESCANSO
+    /* DESCANSO */
 
     if (
         texto.includes("descanso") ||
@@ -463,64 +499,133 @@ La intensidad puede ajustarse según tu condición y experiencia. Empieza de man
     ) {
         return `⏱️ El descanso depende del ejercicio y de la intensidad.
 
-Para ejercicios generales, puedes descansar lo suficiente para recuperar la respiración y mantener una buena técnica en la siguiente serie.
+Puedes descansar hasta recuperar suficientemente la respiración y sentir que puedes volver a realizar el ejercicio con buena técnica.
 
-Si todavía estás aprendiendo, prioriza la calidad del movimiento.`;
+Si todavía estás aprendiendo, no tengas prisa entre series.`;
     }
 
 
-    // PROGRESO
+    /* CALENTAMIENTO */
 
     if (
-        texto.includes("progresar") ||
-        texto.includes("progreso") ||
-        texto.includes("mejorar")
+        texto.includes("calentamiento") ||
+        texto.includes("calentar")
     ) {
-        return `📈 Para progresar en el entrenamiento puedes trabajar poco a poco en tu técnica, control, repeticiones o carga.
+        return `🔥 El calentamiento sirve para preparar el cuerpo antes de entrenar.
 
-Lo importante es hacerlo de manera gradual y mantener una buena ejecución.`;
+Puedes comenzar con movimiento ligero y después realizar movimientos relacionados con los ejercicios que vas a realizar.
+
+El objetivo es prepararte, no cansarte antes del entrenamiento.`;
     }
 
 
-    // EJERCICIO ESPECÍFICO
+    /* CARDIO */
+
+    if (
+        texto.includes("cardio") ||
+        texto.includes("correr") ||
+        texto.includes("bicicleta") ||
+        texto.includes("caminadora") ||
+        texto.includes("eliptica")
+    ) {
+        return `🏃 El cardio puede incluir caminar, correr, bicicleta, elíptica u otras actividades.
+
+La intensidad debe adaptarse a tu condición y experiencia. Puedes comenzar de manera gradual y aumentar poco a poco.`;
+    }
+
+
+    /* PROGRESO */
+
+    if (
+        texto.includes("progreso") ||
+        texto.includes("progresar") ||
+        texto.includes("mejorar")
+    ) {
+        return `📈 Para mejorar en el entrenamiento puedes trabajar progresivamente en:
+
+• Técnica
+• Control del movimiento
+• Repeticiones
+• Carga
+• Consistencia
+
+No necesitas aumentar todo al mismo tiempo.`;
+    }
+
+
+    /* MÚSCULOS */
+
+    if (
+        texto.includes("musculos") ||
+        texto.includes("que trabaja")
+    ) {
+        const ejercicio = buscarEjercicio(texto);
+
+        if (ejercicio) {
+            return `💪 Este ejercicio trabaja principalmente:
+
+${ejercicio.musculos}`;
+        }
+    }
+
+
+    /* TÉCNICA */
+
+    if (
+        texto.includes("como se hace") ||
+        texto.includes("como hacerlo") ||
+        texto.includes("tecnica") ||
+        texto.includes("como hago")
+    ) {
+        const ejercicio = buscarEjercicio(texto);
+
+        if (ejercicio) {
+            return `🏋️ Para realizarlo correctamente:
+
+${ejercicio.tecnica}`;
+        }
+    }
+
+
+    /* ERRORES */
+
+    if (
+        texto.includes("errores") ||
+        texto.includes("error") ||
+        texto.includes("que hago mal")
+    ) {
+        const ejercicio = buscarEjercicio(texto);
+
+        if (ejercicio) {
+            return `⚠️ Algunos errores comunes son:
+
+${ejercicio.errores}`;
+        }
+    }
+
+
+    /* VARIANTES */
+
+    if (
+        texto.includes("variantes") ||
+        texto.includes("variante") ||
+        texto.includes("otra forma")
+    ) {
+        const ejercicio = buscarEjercicio(texto);
+
+        if (ejercicio) {
+            return `🔄 Algunas variantes son:
+
+${ejercicio.variantes}`;
+        }
+    }
+
+
+    /* EJERCICIO DIRECTO */
 
     const ejercicio = buscarEjercicio(texto);
 
     if (ejercicio) {
-
-        if (
-            texto.includes("musculo") ||
-            texto.includes("trabaja") ||
-            texto.includes("sirve")
-        ) {
-            return `💪 ${ejercicio.musculos}`;
-        }
-
-        if (
-            texto.includes("como se hace") ||
-            texto.includes("como hacerlo") ||
-            texto.includes("tecnica") ||
-            texto.includes("hacerlo")
-        ) {
-            return `🏋️ Técnica: ${ejercicio.tecnica}`;
-        }
-
-        if (
-            texto.includes("error") ||
-            texto.includes("errores") ||
-            texto.includes("mal")
-        ) {
-            return `⚠️ Errores comunes: ${ejercicio.errores}`;
-        }
-
-        if (
-            texto.includes("variante") ||
-            texto.includes("variantes") ||
-            texto.includes("otra forma")
-        ) {
-            return `🔄 Variantes: ${ejercicio.variantes}`;
-        }
-
         return `💪 ${ejercicio.grupo}
 
 ${ejercicio.musculos}
@@ -528,43 +633,46 @@ ${ejercicio.musculos}
 🏋️ Técnica:
 ${ejercicio.tecnica}
 
-⚠️ Errores comunes:
-${ejercicio.errores}`;
+⚠️ Errores:
+${ejercicio.errores}
+
+🔄 Variantes:
+${ejercicio.variantes}`;
     }
 
 
-    // GRUPOS MUSCULARES
+    /* GRUPOS MUSCULARES */
 
     if (
-        texto.includes("ejercicios para pecho") ||
-        texto.includes("ejercicios de pecho")
+        texto.includes("ejercicios de pecho") ||
+        texto.includes("ejercicios para pecho")
     ) {
-        return "💪 Para pecho puedes trabajar con press banca, press inclinado y flexiones.";
-    }
-
-    if (
-        texto.includes("ejercicios para espalda") ||
-        texto.includes("ejercicios de espalda")
-    ) {
-        return "🏋️ Para espalda puedes trabajar con jalón al pecho, remo y dominadas o variantes asistidas.";
+        return "💪 Para pecho puedes utilizar press banca, press inclinado y flexiones.";
     }
 
     if (
-        texto.includes("ejercicios para piernas") ||
-        texto.includes("ejercicios de piernas")
+        texto.includes("ejercicios de espalda") ||
+        texto.includes("ejercicios para espalda")
     ) {
-        return "🦵 Para piernas puedes trabajar con sentadilla, prensa y zancadas.";
+        return "🏋️ Para espalda puedes utilizar jalón al pecho, remo y dominadas o variantes asistidas.";
     }
 
     if (
-        texto.includes("ejercicios para hombros") ||
-        texto.includes("ejercicios de hombros")
+        texto.includes("ejercicios de piernas") ||
+        texto.includes("ejercicios para piernas")
     ) {
-        return "🔥 Para hombros puedes trabajar con press de hombros y elevaciones laterales.";
+        return "🦵 Para piernas puedes trabajar sentadillas, prensa y zancadas.";
+    }
+
+    if (
+        texto.includes("ejercicios de hombros") ||
+        texto.includes("ejercicios para hombros")
+    ) {
+        return "🔥 Para hombros puedes trabajar press de hombros y elevaciones laterales.";
     }
 
 
-    // DESPEDIDA
+    /* DESPEDIDA */
 
     if (
         texto.includes("adios") ||
@@ -573,23 +681,23 @@ ${ejercicio.errores}`;
         texto.includes("hasta luego")
     ) {
         return respuestaAleatoria([
-            "¡Nos vemos! 👋 Sigue entrenando con buena técnica.",
-            "¡Hasta luego! 💪 Cuídate y entrena de forma segura.",
-            "¡Adiós! 🏋️ Aquí estará GYMBOT cuando necesites información.",
-            "¡Nos vemos! 😎"
+            "¡Nos vemos! 👋",
+            "¡Hasta luego! 💪",
+            "¡Adiós! 🏋️",
+            "¡Nos vemos! 😎 Sigue entrenando con buena técnica."
         ]);
     }
 
 
-    // RESPUESTAS GENERALES
+    /* RESPUESTA FINAL */
 
-    return respuestaAleatoria(respuestasNoEntiendo);
+    return respuestaAleatoria(desconocido);
 }
 
 
-// -----------------------------
-// ENVIAR MENSAJE
-// -----------------------------
+/* =========================
+   ENVIAR MENSAJE
+========================= */
 
 function enviarMensaje() {
 
@@ -613,14 +721,8 @@ function enviarMensaje() {
 }
 
 
-// -----------------------------
-// ENTER PARA ENVIAR
-// -----------------------------
+/* =========================
+   ENTER
+========================= */
 
-entrada.addEventListener("keydown", function(event) {
-
-    if (event.key === "Enter") {
-        enviarMensaje();
-    }
-
-});
+entrada.addEventListener(
